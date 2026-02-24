@@ -1,6 +1,7 @@
 /* eslint-disable */
 import React, { useState, useCallback, useEffect } from "react";
 
+
 const DARK = {
   bg: "#0b0b14", card: "#141422", cardAlt: "#1a1a2e",
   border: "#2e2e48", borderHi: "#4a4a70",
@@ -868,17 +869,12 @@ function PasswordPrompt({ onSuccess, onCancel }) {
 
 function PhaseRegister({ onRegister, onOpenDashboard }) {
   const [name, setName] = useState(""); const [className, setClassName] = useState(""); const [preferredName, setPreferredName] = useState(""); const [error, setError] = useState(""); const [shake, setShake] = useState(false); const [clickCount, setClickCount] = useState(0); const [showPw, setShowPw] = useState(false);
-  const nameParts = name.trim().split(/\s+/);
-  const firstName = nameParts[0]?nameParts[0].charAt(0).toUpperCase()+nameParts[0].slice(1).toLowerCase():"";
-  const lastName = nameParts[nameParts.length-1]?nameParts[nameParts.length-1].charAt(0).toUpperCase()+nameParts[nameParts.length-1].slice(1).toLowerCase():"";
-  const hasMultiple = nameParts.length>1;
   const getInitials = (n) => n.trim().split(/\s+/).map(w=>w.charAt(0).toUpperCase()).join("");
 
   const handleSubmit = () => {
-    if(!name.trim()||!className.trim()){ setError("⚠️ Both name and class fields are required!"); setShake(true); setTimeout(()=>setShake(false),400); return; }
-    if(hasMultiple&&!preferredName){ setError("⚠️ Please select your preferred name!"); setShake(true); setTimeout(()=>setShake(false),400); return; }
+    if(!name.trim()||!className.trim()||!preferredName.trim()){ setError("⚠️ All fields are required!"); setShake(true); setTimeout(()=>setShake(false),400); return; }
     const baseId = getInitials(name).toLowerCase()+"_"+className.trim().toLowerCase().replace(/\s+/g,"_");
-    const displayName = hasMultiple?(preferredName==="first"?firstName:lastName):firstName;
+    const displayName = preferredName.trim();
     try {
       let finalId = baseId;
       if(localStorage.getItem("detective:"+baseId)){
@@ -903,8 +899,9 @@ function PhaseRegister({ onRegister, onOpenDashboard }) {
       </div>
       <div style={{ background:S.cardAlt, border:"1px solid "+S.border, borderRadius:10, padding:"20px 24px", marginBottom:16 }}>
         <div style={{ marginBottom:16 }}>
-          <label style={{ display:"block", color:S.accent, fontSize:11, fontFamily:"'Courier New',monospace", letterSpacing:1, textTransform:"uppercase", marginBottom:6 }}>👤 Name</label>
-          <input type="text" value={name} onChange={e=>{setName(e.target.value);setError("");setPreferredName("");}} onKeyDown={e=>e.key==="Enter"&&handleSubmit()} placeholder="e.g., Sarah Chen"
+          <label style={{ display:"block", color:S.accent, fontSize:11, fontFamily:"'Courier New',monospace", letterSpacing:1, textTransform:"uppercase", marginBottom:6 }}>👤 Full Name</label>
+          <div style={{ color:S.textMuted, fontSize:10, marginBottom:5 }}>For teacher tracking purposes only</div>
+          <input type="text" value={name} onChange={e=>{setName(e.target.value);setError("");setPreferredName("");}} onKeyDown={e=>e.key==="Enter"&&handleSubmit()} placeholder="e.g., Sarah Chen Li Si"
             style={{ width:"100%", background:S.card, border:"1px solid "+S.border, borderRadius:6, padding:"10px 12px", color:S.textPrimary, fontSize:14, fontFamily:"'Georgia',serif", outline:"none", boxSizing:"border-box" }}/>
         </div>
         <div style={{ marginBottom:16 }}>
@@ -912,16 +909,12 @@ function PhaseRegister({ onRegister, onOpenDashboard }) {
           <input type="text" value={className} onChange={e=>{setClassName(e.target.value);setError("");}} onKeyDown={e=>e.key==="Enter"&&handleSubmit()} placeholder="e.g., 4A, 4B, 10C"
             style={{ width:"100%", background:S.card, border:"1px solid "+S.border, borderRadius:6, padding:"10px 12px", color:S.textPrimary, fontSize:14, fontFamily:"'Georgia',serif", outline:"none", boxSizing:"border-box" }}/>
         </div>
-        {hasMultiple&&(
-          <div style={{ marginBottom:16 }}>
-            <label style={{ display:"block", color:S.accent, fontSize:11, fontFamily:"'Courier New',monospace", letterSpacing:1, textTransform:"uppercase", marginBottom:8 }}>🎯 Preferred Name</label>
-            <div style={{ display:"flex", gap:8 }}>
-              {[["first",firstName],["last",lastName]].map(([k,n])=>(
-                <button key={k} onClick={()=>{setPreferredName(k);setError("");}} style={{ flex:1, background:preferredName===k?S.accent+"22":S.card, border:"2px solid "+(preferredName===k?S.accent:S.border), borderRadius:6, padding:"10px 12px", color:preferredName===k?S.accent:S.textSecondary, fontSize:13, fontFamily:"'Georgia',serif", cursor:"pointer", transition:"all 0.2s" }}>{n||k}</button>
-              ))}
-            </div>
-          </div>
-        )}
+        <div style={{ marginBottom:16 }}>
+          <label style={{ display:"block", color:S.accent, fontSize:11, fontFamily:"'Courier New',monospace", letterSpacing:1, textTransform:"uppercase", marginBottom:6 }}>🎯 Preferred Name</label>
+          <input type="text" value={preferredName} onChange={e=>{setPreferredName(e.target.value);setError("");}} onKeyDown={e=>e.key==="Enter"&&handleSubmit()} placeholder="e.g. Sarah, Xiao Ming, Wei"
+            style={{ width:"100%", background:S.card, border:"1px solid "+S.border, borderRadius:6, padding:"10px 12px", color:S.textPrimary, fontSize:14, fontFamily:"'Georgia',serif", outline:"none", boxSizing:"border-box" }}/>
+          <div style={{ color:S.textMuted, fontSize:10, marginTop:4 }}>This is the name shown to you during the game</div>
+        </div>
         {error&&<div style={{ background:S.red+"12", border:"1px solid "+S.red+"33", borderRadius:6, padding:"8px 12px", marginBottom:12 }}><div style={{ color:S.red, fontSize:12, lineHeight:1.5 }}>{error}</div></div>}
         <div style={{ background:S.accent+"12", border:"1px solid "+S.accent+"55", borderRadius:6, padding:"10px 12px", marginBottom:16 }}>
           <div style={{ color:S.accent, fontSize:11, lineHeight:1.6, textAlign:"center" }}>
@@ -1122,15 +1115,15 @@ function PhaseStation({ station, onSolved, caseIdx, detectiveId, theme }) {
     }
   };
 
-  const recordAttempt = (ionKey, wrong, total) => {
+  const recordAttempt = (ionKey, usedAllAttempts) => {
     if(!detectiveId) return;
     try {
       const key="detective:"+detectiveId;
       const data=JSON.parse(localStorage.getItem(key)||"{}");
       if(!data.ionAttempts) data.ionAttempts=[];
       const existing=data.ionAttempts.find(a=>a.ion===ionKey);
-      if(existing){ existing.wrong+=wrong; existing.total+=total; }
-      else data.ionAttempts.push({ion:ionKey,wrong,total});
+      if(existing){ existing.total+=1; if(usedAllAttempts) existing.wrong+=1; }
+      else data.ionAttempts.push({ion:ionKey, wrong:usedAllAttempts?1:0, total:1});
       localStorage.setItem(key,JSON.stringify(data));
     } catch(e){}
   };
@@ -1217,7 +1210,7 @@ function PhaseStation({ station, onSolved, caseIdx, detectiveId, theme }) {
         if((p1.toLowerCase()===a1.toLowerCase()&&p2.toLowerCase()===a2.toLowerCase())||(p1.toLowerCase()===a2.toLowerCase()&&p2.toLowerCase()===a1.toLowerCase())){ matchFound=true; break; }
       }
       if(matchFound){
-        recordAttempt("NH3,HCl",wrongCount,wrongCount+1);
+        recordAttempt("NH3,HCl", false);
         recordCaseTime(caseIdx);
         setSolved(true);
         addLog({text:"✓ Correct! Both gases identified: "+parts[0]+" and "+parts[1],color:"#15803d"});
@@ -1225,7 +1218,7 @@ function PhaseStation({ station, onSolved, caseIdx, detectiveId, theme }) {
       }
       setAttemptCount(c=>c+1); setWrongCount(c=>c+1);
       if(wrongCount+1>=3){
-        recordAttempt("NH3,HCl",wrongCount+1,wrongCount+1);
+        recordAttempt("NH3,HCl", true);
         setShake(true); setAnswerError("❌ Maximum attempts reached. The correct answer was: NH₃ and HCl");
         setTimeout(()=>setShake(false),500);
         setSolved(true);
@@ -1261,7 +1254,7 @@ function PhaseStation({ station, onSolved, caseIdx, detectiveId, theme }) {
     const partialMatch=station.answer.partialCredit&&station.answer.partialCredit.some(a=>{ const an=normalizeSubscripts(a).replace(/[²³⁺⁻]/g,m=>m==="²"?"2":m==="³"?"3":m==="⁺"?"+":"-"); return inputNorm.toLowerCase()===an.toLowerCase(); });
 
     if(formulaMatch||nameMatch){
-      recordAttempt(ionKey,wrongCount,wrongCount+1);
+      recordAttempt(ionKey, false);
       recordCaseTime(caseIdx);
       setSolved(true);
       const formatted=station.answer.accepted[0].replace(/2\+/g,"²⁺").replace(/3\+/g,"³⁺").replace(/2-/g,"²⁻").replace(/42-/g,"₄²⁻").replace(/(\d)/g,m=>({2:"₂",3:"₃",4:"₄"}[m]||m));
@@ -1280,7 +1273,7 @@ function PhaseStation({ station, onSolved, caseIdx, detectiveId, theme }) {
       else if(inputLower.includes("zinc(ii)")||inputLower.includes("aluminium(iii)")) msg="❌ Zinc and aluminium are NOT transition metals — use plain name only!";
       else if((inputLower.includes("copper")&&inputLower.includes("ii")&&!input.includes("("))||(inputLower.includes("iron")&&inputLower.includes("ii")&&!input.includes("("))) msg="❌ Missing brackets! Use copper(II), not copperII.";
       if(attemptCount+1>=MAX_ATTEMPTS){
-        recordAttempt(ionKey,wrongCount+1,wrongCount+1);
+        recordAttempt(ionKey, true);
         setSolved(true);
         const formatted=station.answer.accepted[0].replace(/2\+/g,"²⁺").replace(/3\+/g,"³⁺").replace(/2-/g,"²⁻").replace(/42-/g,"₄²⁻").replace(/(\d)/g,m=>({2:"₂",3:"₃",4:"₄"}[m]||m));
         addLog({text:"❌ Maximum attempts reached. Correct answer: "+formatted,color:"#dc2626"});
