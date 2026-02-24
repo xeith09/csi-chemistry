@@ -602,15 +602,13 @@ function TeacherDashboard({ onBack }) {
   const [tab, setTab] = useState("overview");
 
   useEffect(()=>{
-    const all = [];
-    for(let i=0;i<localStorage.length;i++){
-      const key=localStorage.key(i);
-      if(key&&key.startsWith("detective:")){
-        try{ all.push(JSON.parse(localStorage.getItem(key))); }catch(e){}
-      }
-    }
-    all.sort((a,b)=>new Date(b.timestamp)-new Date(a.timestamp));
-    setStudents(all);
+    const fetch = async () => {
+      const snapshot = await getDocs(collection(db, "students"));
+      const all = snapshot.docs.map(d=>d.data());
+      all.sort((a,b)=>new Date(b.timestamp)-new Date(a.timestamp));
+      setStudents(all);
+    };
+    fetch();
   },[]);
 
   const filtered = students.filter(s=>
@@ -655,19 +653,15 @@ function TeacherDashboard({ onBack }) {
   const [confirmClear, setConfirmClear] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState(null);
 
-  const deleteStudent = (id) => {
-    localStorage.removeItem("detective:"+id);
+  const deleteStudent = async (id) => {
+    await deleteDoc(doc(db, "students", id));
     setStudents(prev=>prev.filter(s=>s.id!==id));
     setConfirmDelete(null);
   };
 
-  const clearAllData = () => {
-    const keysToRemove = [];
-    for(let i=0;i<localStorage.length;i++){
-      const key=localStorage.key(i);
-      if(key&&key.startsWith("detective:")) keysToRemove.push(key);
-    }
-    keysToRemove.forEach(k=>localStorage.removeItem(k));
+  const clearAllData = async () => {
+    const snapshot = await getDocs(collection(db, "students"));
+    await Promise.all(snapshot.docs.map(d=>deleteDoc(doc(db, "students", d.id))));
     setStudents([]);
     setConfirmClear(false);
   };
@@ -871,21 +865,22 @@ function PhaseRegister({ onRegister, onOpenDashboard }) {
   const [name, setName] = useState(""); const [className, setClassName] = useState(""); const [preferredName, setPreferredName] = useState(""); const [error, setError] = useState(""); const [shake, setShake] = useState(false); const [clickCount, setClickCount] = useState(0); const [showPw, setShowPw] = useState(false);
   const getInitials = (n) => n.trim().split(/\s+/).map(w=>w.charAt(0).toUpperCase()).join("");
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if(!name.trim()||!className.trim()||!preferredName.trim()){ setError("⚠️ All fields are required!"); setShake(true); setTimeout(()=>setShake(false),400); return; }
     const baseId = getInitials(name).toLowerCase()+"_"+className.trim().toLowerCase().replace(/\s+/g,"_");
     const displayName = preferredName.trim();
     try {
       let finalId = baseId;
-      if(localStorage.getItem("detective:"+baseId)){
+      const existing = await getDoc(doc(db, "students", baseId));
+      if(existing.exists()){
         let suffix=2;
-        while(localStorage.getItem("detective:"+baseId+"_"+suffix)) suffix++;
+        while((await getDoc(doc(db, "students", baseId+"_"+suffix))).exists()) suffix++;
         finalId=baseId+"_"+suffix;
       }
       const data = { fullName:name.trim(), displayName, class:className.trim(), id:finalId, timestamp:new Date().toISOString(), casesCompleted:[], ionAttempts:[], caseTimes:[] };
-      localStorage.setItem("detective:"+finalId, JSON.stringify(data));
+      await setDoc(doc(db, "students", finalId), data);
       onRegister(data);
-    } catch(e) { setError("⚠️ Storage error. Please try again or refresh."); }
+    } catch(e) { setError("⚠️ Connection error. Please check your internet and try again."); }
   };
 
   return (
@@ -1115,28 +1110,30 @@ function PhaseStation({ station, onSolved, caseIdx, detectiveId, theme }) {
     }
   };
 
-  const recordAttempt = (ionKey, usedAllAttempts) => {
+  const recordAttempt = async (ionKey, usedAllAttempts) => {
     if(!detectiveId) return;
     try {
-      const key="detective:"+detectiveId;
-      const data=JSON.parse(localStorage.getItem(key)||"{}");
+      const ref = doc(db, "students", detectiveId);
+      const snap = await getDoc(ref);
+      const data = snap.data();
       if(!data.ionAttempts) data.ionAttempts=[];
       const existing=data.ionAttempts.find(a=>a.ion===ionKey);
       if(existing){ existing.total+=1; if(usedAllAttempts) existing.wrong+=1; }
       else data.ionAttempts.push({ion:ionKey, wrong:usedAllAttempts?1:0, total:1});
-      localStorage.setItem(key,JSON.stringify(data));
+      await setDoc(ref, data);
     } catch(e){}
   };
 
-  const recordCaseTime = (cIdx) => {
+  const recordCaseTime = async (cIdx) => {
     if(!detectiveId) return;
     try {
       const mins=(Date.now()-stationStartTime)/60000;
-      const key="detective:"+detectiveId;
-      const data=JSON.parse(localStorage.getItem(key)||"{}");
+      const ref = doc(db, "students", detectiveId);
+      const snap = await getDoc(ref);
+      const data = snap.data();
       if(!data.caseTimes) data.caseTimes=[];
-      data.caseTimes.push({caseIdx:cIdx,minutes:parseFloat(mins.toFixed(1))});
-      localStorage.setItem(key,JSON.stringify(data));
+      data.caseTimes.push({caseIdx:cIdx, minutes:parseFloat(mins.toFixed(1))});
+      await setDoc(ref, data);
     } catch(e){}
   };
 
@@ -1502,15 +1499,16 @@ function PhaseAccusation({ caseData, onVerdict, onCaseSolved, detectiveId, suspe
   const [reportsOpen, setReportsOpen] = useState(false);
   const correct=caseData.suspects.find(s=>s.guilty);
 
-  const handleVerdict = () => {
+  const handleVerdict = async () => {
     if(detectiveId&&chosen===correct.id){
       try{
-        const key="detective:"+detectiveId;
-        const data=JSON.parse(localStorage.getItem(key)||"{}");
+        const ref = doc(db, "students", detectiveId);
+        const snap = await getDoc(ref);
+        const data = snap.data();
         const idx=CASES.findIndex(c=>c.id===caseData.id);
         if(idx>=0&&!(data.casesCompleted||[]).includes(idx)){
           data.casesCompleted=[...(data.casesCompleted||[]),idx];
-          localStorage.setItem(key,JSON.stringify(data));
+          await setDoc(ref, data);
         }
       }catch(e){}
     }
