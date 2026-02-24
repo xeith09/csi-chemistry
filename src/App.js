@@ -70,7 +70,7 @@ const CASES = [
         "Dilute HNO₃": { first: { text: "You add dilute nitric acid to the sample. No fizzing or bubbling occurs — the solution stays clear with its blue-green tint.", visual: null } },
         "Dilute HCl": { first: { text: "You add dilute hydrochloric acid to the sample. No fizzing or bubbling occurs — the solution stays clear. No reaction observed.", visual: null } },
         "Limewater": { first: { text: "You add limewater to the sample. Nothing happens — no precipitate forms.", visual: null } },
-        "NaOH solution": { first: { text: "You add NaOH solution to the water sample. The blue-green solution stays clear—no precipitate forms yet. You need to add aluminium and heat to test for nitrate.", visual: null } },
+        "NaOH solution": { first: { text: "You add NaOH solution to the water sample. The blue-green solution stays clear — no precipitate forms.", visual: null } },
         "Aluminium foil": { first_without_naoh: { text: "You add aluminium foil, but nothing happens. You need to add NaOH solution first to create an alkaline environment for the reaction.", visual: null, warning: true }, first_with_naoh: { text: "You add small pieces of aluminium foil to the NaOH solution. The aluminium begins to react slowly, producing tiny bubbles. Now heat the mixture with the Bunsen burner to speed up the reaction.", visual: { type: "bubbling", bubbles: true } } },
         "AgNO₃ solution": { first: { text: "You add AgNO₃ solution. No precipitate forms — the solution stays clear.", visual: null } },
         "Ba(NO₃)₂ solution": { first: { text: "You add Ba(NO₃)₂ solution. No precipitate forms — the solution stays clear.", visual: null } },
@@ -149,7 +149,7 @@ const CASES = [
       objects: [{ id: "vial_d", label: "Vial — SAMPLE D", icon: "🧪", pickup: true }, { id: "bunsen_burner", label: "Bunsen Burner", icon: "🔥", pickup: false }, { id: "litmus_red_cellar", label: "Damp Red Litmus Paper", icon: "🔴", pickup: true }, { id: "litmus_blue_cellar", label: "Damp Blue Litmus Paper", icon: "🔵", pickup: true }],
       reagents: ["NaOH solution", "Aluminium foil", "Dilute HNO₃", "Ba(NO₃)₂ solution", "AgNO₃ solution", "Dilute HCl", "Limewater"],
       reactions: {
-        "NaOH solution": { first: { text: "You add NaOH solution to the wine sample. No precipitate forms — the solution stays clear. NaOH alone does not identify the anion here.", visual: null } },
+        "NaOH solution": { first: { text: "You add NaOH solution to the wine sample. The solution stays clear — no precipitate forms.", visual: null } },
         "Aluminium foil": { first_without_naoh: { text: "You add aluminium foil, but nothing happens. Add NaOH solution first if you intend to test for nitrate.", visual: null, warning: true }, first_with_naoh: { text: "You add aluminium foil to the alkaline solution. The aluminium reacts very slowly at room temperature. You could heat the mixture to see if any gas is released.", visual: null } },
         "Dilute HNO₃": { first: { text: "You add dilute nitric acid to the wine sample. No fizzing or bubbling occurs — the solution stays clear.", visual: null } },
         "Dilute HCl": { first: { text: "You add dilute hydrochloric acid to the wine sample. No fizzing or bubbling occurs — the solution stays clear. No reaction observed.", visual: null } },
@@ -232,7 +232,7 @@ const CASES = [
       objects: [{ id: "vial_e", label: "Vial — SAMPLE E", icon: "🧪", pickup: true }, { id: "bunsen_burner", label: "Bunsen Burner", icon: "🔥", pickup: false }, { id: "litmus_red_lib", label: "Damp Red Litmus Paper", icon: "🔴", pickup: true }, { id: "litmus_blue_lib", label: "Damp Blue Litmus Paper", icon: "🔵", pickup: true }],
       reagents: ["NaOH solution", "Aluminium foil", "Dilute HNO₃", "AgNO₃ solution", "Ba(NO₃)₂ solution", "Dilute HCl", "Limewater"],
       reactions: {
-        "NaOH solution": { first: { text: "You add NaOH solution to the mineral water sample. No precipitate forms — the solution stays clear. NaOH alone does not identify the anion here.", visual: null } },
+        "NaOH solution": { first: { text: "You add NaOH solution to the mineral water sample. The solution stays clear — no precipitate forms.", visual: null } },
         "Aluminium foil": { first_without_naoh: { text: "You add aluminium foil, but nothing happens. Add NaOH solution first if you intend to test for nitrate.", visual: null, warning: true }, first_with_naoh: { text: "You add aluminium foil to the alkaline solution. The aluminium reacts very slowly at room temperature. You could heat the mixture to see if any gas is released.", visual: null } },
         "Dilute HNO₃": { first: { text: "You add dilute nitric acid to the sample. No fizzing or bubbling occurs—the solution stays clear.", visual: null } },
         "Dilute HCl": { first: { text: "You add dilute hydrochloric acid to the sample. No fizzing or bubbling occurs—the solution stays clear. No reaction observed.", visual: null } },
@@ -1327,9 +1327,17 @@ function PhaseStation({ station, onSolved, caseIdx, detectiveId, theme }) {
               </button>
             ):(
               <div style={{ display:"flex", gap:8, alignItems:"flex-start", flexWrap:"wrap" }}>
-                <TestTubeDropZone onReagentDrop={addReagent}>
-                  <VisualTestTube liquidLevel={visualState.liquidLevel} liquidColor={visualState.liquidColor} precipitateColor={visualState.precipitateColor} precipitateHeight={visualState.precipitateHeight} bubbling={visualState.bubbling} animating={visualState.animating} isHeating={isHeating} airHoleOpen={airHoleOpen} theme={theme}/>
-                </TestTubeDropZone>
+                <div style={{ display:"flex", alignItems:"flex-start", gap:10 }}>
+                  <TestTubeDropZone onReagentDrop={addReagent}>
+                    <VisualTestTube liquidLevel={visualState.liquidLevel} liquidColor={visualState.liquidColor} precipitateColor={visualState.precipitateColor} precipitateHeight={visualState.precipitateHeight} bubbling={visualState.bubbling} animating={visualState.animating} isHeating={isHeating} airHoleOpen={airHoleOpen} theme={theme}/>
+                  </TestTubeDropZone>
+                  {log.length>0&&(
+                    <div style={{ flex:1, marginTop:12, padding:"10px 12px", background:S.accent+"12", border:"1px solid "+S.accent+"44", borderRadius:8 }}>
+                      <div style={{ color:S.accent, fontSize:9, fontFamily:"'Courier New',monospace", letterSpacing:1, textTransform:"uppercase", marginBottom:4 }}>🔬 Latest Observation</div>
+                      <div style={{ color:S.textPrimary, fontSize:12, lineHeight:1.55 }}>{typeof log[log.length-1]==="string"?log[log.length-1]:log[log.length-1].text}</div>
+                    </div>
+                  )}
+                </div>
                 {station.heating&&station.heating.result&&station.heating.result.gasTest&&gasTestVisualResult&&(
                   <div style={{ padding:12, background:S.card, border:"1px solid "+S.accent+"44", borderRadius:8, minWidth:140 }}>
                     <div style={{ color:S.accent, fontSize:10, fontFamily:"'Courier New',monospace", marginBottom:8, textAlign:"center", letterSpacing:1 }}>🔬 TEST RESULT</div>
