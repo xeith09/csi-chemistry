@@ -707,7 +707,7 @@ function TeacherDashboard({ onBack }) {
             <StatCard icon="👥" label="Total Sessions" value={totalSessions} sub="unique registrations"/>
             <StatCard icon="✅" label="Completed All 3" value={completionRate+"%"} sub={completedAll+" of "+totalSessions+" students"} color="#22c55e"/>
             <StatCard icon="📚" label="Classes Active" value={classList.length} sub="distinct class groups" color="#3b82f6"/>
-            <StatCard icon="⚠️" label="Struggling Ions" value={ionList.length>0?ionList[0]:"—"} sub={ionList.length>0?ionWrong[ionList[0]]+" wrong attempts":"no data yet"} color="#f97316"/>
+            <StatCard icon="⚠️" label="Struggling Ions/Gases" value={ionList.length>0?ionList[0]:"—"} sub={ionList.length>0?ionWrong[ionList[0]]+" wrong attempts":"no data yet"} color="#f97316"/>
           </div>
           <div style={{ background:S.cardAlt, border:"1px solid "+S.border, borderRadius:10, padding:"14px 16px", marginBottom:14 }}>
             <div style={{ color:S.accent, fontSize:11, fontFamily:"'Courier New',monospace", letterSpacing:1.2, textTransform:"uppercase", marginBottom:12 }}>📊 Case Completion</div>
