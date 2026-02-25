@@ -73,7 +73,7 @@ const CASES = [
         "Dilute HCl": { first: { text: "You add dilute hydrochloric acid to the sample. No fizzing or bubbling occurs — the solution stays clear. No reaction observed.", visual: null } },
         "Limewater": { first: { text: "You add limewater to the sample. Nothing happens — no precipitate forms.", visual: null } },
         "NaOH solution": { first: { text: "You add NaOH solution to the water sample. The blue-green solution stays clear — no precipitate forms.", visual: null } },
-        "Aluminium foil": { first_without_naoh: { text: "You add aluminium foil, but nothing happens. You need to add NaOH solution first to create an alkaline environment for the reaction.", visual: null, warning: true }, first_with_naoh: { text: "You add small pieces of aluminium foil to the NaOH solution. The aluminium begins to react slowly, producing tiny bubbles. Now heat the mixture with the Bunsen burner to speed up the reaction.", visual: { type: "bubbling", bubbles: true } } },
+        "Aluminium foil": { first_without_naoh: { text: "You add aluminium foil, but nothing happens. You need to add NaOH solution first to create an alkaline environment for the reaction.", visual: null, warning: true }, first_with_naoh: { text: "You add small pieces of aluminium foil to the NaOH solution. The aluminium begins to react slowly, producing tiny bubbles. Now heat the mixture with the Bunsen burner to speed up the reaction.", visual: { type: "bubbling", bubbles: true, color: "#7dd3c033" } } },
         "AgNO₃ solution": { first: { text: "You add AgNO₃ solution. No precipitate forms — the solution stays clear.", visual: null } },
         "Ba(NO₃)₂ solution": { first: { text: "You add Ba(NO₃)₂ solution. No precipitate forms — the solution stays clear.", visual: null } },
       },
@@ -1023,7 +1023,7 @@ function PhaseStation({ station, onSolved, caseIdx, detectiveId, theme }) {
 
   const getInitialSampleColor = () => {
     if(station.id==="kitchen") return "#7dd3fc55";
-    if(station.id==="wellhouse") return "#4ade8066";
+    if(station.id==="wellhouse") return "#7dd3c033";
     return "rgba(255,255,255,0.0)";
   };
 
