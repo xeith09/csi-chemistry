@@ -401,7 +401,7 @@ function LimewaterSetup({ active=false }) {
         <text x="130" y="172" textAnchor="middle" fill="#1a1a1a" fontSize="6.5" fontFamily="'Courier New',monospace">limewater</text>
         <text x="51" y="50" textAnchor="middle" fill="#1a1a1a" fontSize="6.5" fontFamily="'Courier New',monospace">gas</text>
       </svg>
-      <div style={{ color:labelColor, fontSize:8, fontFamily:"'Courier New',monospace", fontWeight:600, marginTop:2, transition:"color 0.5s" }}>{phaseLabel}</div>
+      <div style={{ color:"#1a1a1a", fontSize:8, fontFamily:"'Courier New',monospace", fontWeight:600, marginTop:2, transition:"color 0.5s" }}>{phaseLabel}</div>
       <div style={{ display:"flex", gap:4, marginTop:4 }}>{[0,1,2].map(p=><div key={p} style={{ width:6, height:6, borderRadius:"50%", background:phase===p?"#c8a96e":"#333", transition:"background 0.4s" }}/>)}</div>
       <style>{`@keyframes bubble-rise-svg{0%{transform:translateY(0);opacity:0.7}80%{transform:translateY(-22px);opacity:0.5}100%{transform:translateY(-26px);opacity:0}}`}</style>
     </div>
@@ -1022,7 +1022,8 @@ function PhaseStation({ station, onSolved, caseIdx, detectiveId, theme }) {
   };
 
   const getInitialSampleColor = () => {
-    if(station.title&&station.title.includes("Kitchen")||station.id==="kitchen") return "#7dd3fc55";
+    if(station.id==="kitchen") return "#7dd3fc55";
+    if(station.id==="wellhouse") return "#4ade8066";
     return "rgba(255,255,255,0.0)";
   };
 
