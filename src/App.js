@@ -1172,7 +1172,7 @@ function PhaseStation({ station, onSolved, caseIdx, detectiveId, theme }) {
     if(visualKey) setGasTestVisualResult({itemId,visualKey,timestamp:Date.now()});
   };
 
-  const tryUnlock = () => {
+  const tryUnlock = async () => {
     if(!answerInput.trim()) return;
     const input=answerInput.trim();
     const inputLower=input.toLowerCase();
@@ -1210,7 +1210,7 @@ function PhaseStation({ station, onSolved, caseIdx, detectiveId, theme }) {
         if((p1.toLowerCase()===a1.toLowerCase()&&p2.toLowerCase()===a2.toLowerCase())||(p1.toLowerCase()===a2.toLowerCase()&&p2.toLowerCase()===a1.toLowerCase())){ matchFound=true; break; }
       }
       if(matchFound){
-        recordAttempt("NH3,HCl", false);
+        await recordAttempt("NH3,HCl", false);
         recordCaseTime(caseIdx);
         setSolved(true);
         addLog({text:"✓ Correct! Both gases identified: "+parts[0]+" and "+parts[1],color:"#15803d"});
@@ -1254,7 +1254,7 @@ function PhaseStation({ station, onSolved, caseIdx, detectiveId, theme }) {
     const partialMatch=station.answer.partialCredit&&station.answer.partialCredit.some(a=>{ const an=normalizeSubscripts(a).replace(/[²³⁺⁻]/g,m=>m==="²"?"2":m==="³"?"3":m==="⁺"?"+":"-"); return inputNorm.toLowerCase()===an.toLowerCase(); });
 
     if(formulaMatch||nameMatch){
-      recordAttempt(ionKey, false);
+      await recordAttempt(ionKey, false);
       recordCaseTime(caseIdx);
       setSolved(true);
       const formatted=station.answer.accepted[0].replace(/2\+/g,"²⁺").replace(/3\+/g,"³⁺").replace(/2-/g,"²⁻").replace(/42-/g,"₄²⁻").replace(/(\d)/g,m=>({2:"₂",3:"₃",4:"₄"}[m]||m));
