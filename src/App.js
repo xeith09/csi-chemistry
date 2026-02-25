@@ -1,5 +1,7 @@
 /* eslint-disable */
 import React, { useState, useCallback, useEffect } from "react";
+import { db } from "./firebase";
+import { doc, setDoc, getDoc, collection, getDocs, deleteDoc } from "firebase/firestore";
 
 
 const DARK = {
@@ -396,8 +398,8 @@ function LimewaterSetup({ active=false }) {
         <ellipse cx="130" cy="155" rx="12" ry="5" fill="rgba(255,255,255,0.05)" stroke="#4a4a70" strokeWidth="2"/>
         <rect x="120" y={phase===0?105:95} width="20" height={phase===0?50:60} rx="2" fill={tubeColor} style={{ transition:"fill 2s ease-in-out, height 0.8s ease, y 0.8s ease" }}/>
         {phase===1&&[123,128,133,126,131].map((x,i)=><circle key={i} cx={x} cy={115+i*7} r="2.5" fill="#e2e8f0" stroke="#94a3b8" strokeWidth="0.5" opacity="0.95" style={{ animation:"precipitate-settle 0.8s "+(i*0.1)+"s ease-out both" }}/>)}
-        <text x="130" y="172" textAnchor="middle" fill={S.textMuted} fontSize="6.5" fontFamily="'Courier New',monospace">limewater</text>
-        <text x="51" y="50" textAnchor="middle" fill={S.textMuted} fontSize="6.5" fontFamily="'Courier New',monospace">gas</text>
+        <text x="130" y="172" textAnchor="middle" fill="#1a1a1a" fontSize="6.5" fontFamily="'Courier New',monospace">limewater</text>
+        <text x="51" y="50" textAnchor="middle" fill="#1a1a1a" fontSize="6.5" fontFamily="'Courier New',monospace">gas</text>
       </svg>
       <div style={{ color:labelColor, fontSize:8, fontFamily:"'Courier New',monospace", fontWeight:600, marginTop:2, transition:"color 0.5s" }}>{phaseLabel}</div>
       <div style={{ display:"flex", gap:4, marginTop:4 }}>{[0,1,2].map(p=><div key={p} style={{ width:6, height:6, borderRadius:"50%", background:phase===p?"#c8a96e":"#333", transition:"background 0.4s" }}/>)}</div>
@@ -880,7 +882,7 @@ function PhaseRegister({ onRegister, onOpenDashboard }) {
       const data = { fullName:name.trim(), displayName, class:className.trim(), id:finalId, timestamp:new Date().toISOString(), casesCompleted:[], ionAttempts:[], caseTimes:[] };
       await setDoc(doc(db, "students", finalId), data);
       onRegister(data);
-    } catch(e) { setError("⚠️ Connection error. Please check your internet and try again."); }
+    } catch(e) { console.error("Firebase error:", e); setError("⚠️ Error: " + e.message); }
   };
 
   return (
