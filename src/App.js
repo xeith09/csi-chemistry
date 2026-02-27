@@ -602,6 +602,8 @@ function TeacherDashboard({ onBack }) {
   const [students, setStudents] = useState([]);
   const [filter, setFilter] = useState("");
   const [tab, setTab] = useState("overview");
+  const [selectedStudent, setSelectedStudent] = useState(null);
+  const [classFilter, setClassFilter] = useState("");
 
   useEffect(()=>{
     const fetch = async () => {
@@ -792,46 +794,88 @@ function TeacherDashboard({ onBack }) {
       )}
       {tab==="students"&&(
         <div>
-          <input type="text" value={filter} onChange={e=>setFilter(e.target.value)} placeholder="Search by name, ID, or class…"
-            style={{ width:"100%", background:S.card, border:"1px solid "+S.border, borderRadius:6, padding:"10px 12px", color:S.textPrimary, fontSize:13, outline:"none", boxSizing:"border-box", marginBottom:12 }}/>
-          <div style={{ background:S.cardAlt, border:"1px solid "+S.border, borderRadius:10, overflow:"hidden" }}>
-            {filtered.length===0?(
-              <div style={{ padding:40, textAlign:"center", color:S.textMuted }}>{filter?"No students match your search":"No students registered yet"}</div>
-            ):(
-              <div style={{ maxHeight:500, overflowY:"auto" }}>
-                {filtered.map((student,i)=>(
-                  <div key={student.id} style={{ padding:"12px 16px", borderBottom:i<filtered.length-1?"1px solid "+S.border:"none" }}>
-                    <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", gap:10 }}>
-                      <div style={{ flex:1 }}>
-                        <div style={{ display:"flex", gap:12, alignItems:"center", marginBottom:4 }}>
-                          <span style={{ color:S.accent, fontSize:13, fontWeight:700, fontFamily:"'Georgia',serif" }}>{student.fullName}</span>
-                          <span style={{ color:S.textMuted, fontSize:10, fontFamily:"'Courier New',monospace" }}>({student.displayName})</span>
-                        </div>
-                        <div style={{ display:"flex", gap:14, fontSize:11, color:S.textSecondary, flexWrap:"wrap" }}>
-                          <span>📚 Class: <strong style={{ color:S.textPrimary }}>{student.class}</strong></span>
-                          <span>✅ Cases: <strong style={{ color:S.accent }}>{(student.casesCompleted||[]).length}/3</strong></span>
-                          <span>🕐 {new Date(student.timestamp).toLocaleString()}</span>
-                        </div>
-                      </div>
-                      <div style={{ flexShrink:0 }}>
-                        {confirmDelete===student.id?(
-                          <div style={{ display:"flex", alignItems:"center", gap:5 }}>
-                            <span style={{ color:S.red, fontSize:10, fontFamily:"'Courier New',monospace" }}>Delete?</span>
-                            <button onClick={()=>deleteStudent(student.id)} style={{ background:S.red, border:"none", borderRadius:4, padding:"3px 8px", cursor:"pointer", color:"#fff", fontSize:10, fontWeight:700 }}>Yes</button>
-                            <button onClick={()=>setConfirmDelete(null)} style={{ background:"transparent", border:"1px solid "+S.border, borderRadius:4, padding:"3px 8px", cursor:"pointer", color:S.textMuted, fontSize:10 }}>No</button>
-                          </div>
-                        ):(
-                          <button onClick={()=>setConfirmDelete(student.id)} style={{ background:"transparent", border:"1px solid "+S.red+"44", borderRadius:5, padding:"4px 8px", cursor:"pointer", color:S.red, fontSize:11, transition:"all 0.2s" }} onMouseEnter={e=>e.currentTarget.style.background=S.red+"12"} onMouseLeave={e=>e.currentTarget.style.background="transparent"} title="Delete this student">
-                            🗑️
-                          </button>
-                        )}
-                      </div>
-                    </div>
+          {selectedStudent?(
+            <div>
+              <button onClick={()=>setSelectedStudent(null)} style={{ background:"transparent", border:"none", color:S.textMuted, fontSize:11, fontFamily:"'Courier New',monospace", cursor:"pointer", padding:0, marginBottom:12 }}>← Back to students</button>
+              <div style={{ background:S.cardAlt, border:"1px solid "+S.border, borderRadius:10, padding:"14px 16px", marginBottom:12 }}>
+                <div style={{ display:"flex", alignItems:"center", gap:10, marginBottom:12 }}>
+                  <div style={{ fontSize:28 }}>🕵️</div>
+                  <div>
+                    <div style={{ color:S.textPrimary, fontSize:16, fontWeight:700, fontFamily:"'Georgia',serif" }}>{selectedStudent.fullName}</div>
+                    <div style={{ color:S.textMuted, fontSize:11 }}>Preferred: {selectedStudent.displayName} · Class: {selectedStudent.class}</div>
+                    <div style={{ color:S.textMuted, fontSize:10 }}>{new Date(selectedStudent.timestamp).toLocaleString()}</div>
                   </div>
-                ))}
+                </div>
+                <div style={{ marginBottom:12 }}>
+                  <div style={{ color:S.accent, fontSize:11, fontFamily:"'Courier New',monospace", letterSpacing:1, textTransform:"uppercase", marginBottom:8 }}>📚 Cases Completed</div>
+                  {CASE_NAMES.map((name,i)=>{ const done=(selectedStudent.casesCompleted||[]).includes(i); return <div key={i} style={{ display:"flex", alignItems:"center", gap:8, marginBottom:5, padding:"6px 10px", background:S.card, borderRadius:6 }}><span style={{ fontSize:14 }}>{done?"✅":"⬜"}</span><span style={{ color:done?S.textPrimary:S.textMuted, fontSize:12 }}>{name}</span></div>; })}
+                </div>
+                <div style={{ marginBottom:12 }}>
+                  <div style={{ color:S.accent, fontSize:11, fontFamily:"'Courier New',monospace", letterSpacing:1, textTransform:"uppercase", marginBottom:8 }}>🧪 Ion / Gas Performance</div>
+                  {(selectedStudent.ionAttempts||[]).length===0?(
+                    <div style={{ color:S.textMuted, fontSize:12, padding:"10px 0" }}>No attempt data recorded yet.</div>
+                  ):(selectedStudent.ionAttempts||[]).map((a,i)=>{ const label=ION_LABELS[a.ion]||a.ion; const correct=a.total-a.wrong; const acc=a.total>0?Math.round((correct/a.total)*100):0; return <div key={i} style={{ display:"flex", alignItems:"center", gap:10, marginBottom:6, padding:"6px 10px", background:S.card, borderRadius:6 }}><span style={{ color:S.accent, fontSize:12, fontFamily:"'Courier New',monospace", fontWeight:700, minWidth:70 }}>{label}</span><div style={{ flex:1 }}><div style={{ height:5, background:S.cardAlt, borderRadius:3, overflow:"hidden" }}><div style={{ width:acc+"%", height:"100%", background:acc>=80?"#22c55e":acc>=50?"#f97316":"#ef4444", borderRadius:3 }}/></div></div><span style={{ color:acc>=80?"#4ade80":acc>=50?"#fb923c":"#f87171", fontSize:11, minWidth:80, textAlign:"right" }}>{correct}/{a.total} correct</span></div>; })}
+                </div>
+                {(selectedStudent.caseTimes||[]).length>0&&(
+                  <div>
+                    <div style={{ color:S.accent, fontSize:11, fontFamily:"'Courier New',monospace", letterSpacing:1, textTransform:"uppercase", marginBottom:8 }}>⏱️ Time per Case</div>
+                    {(selectedStudent.caseTimes||[]).map((t,i)=><div key={i} style={{ display:"flex", justifyContent:"space-between", padding:"6px 10px", background:S.card, borderRadius:6, marginBottom:5 }}><span style={{ color:S.textSecondary, fontSize:12 }}>{CASE_NAMES[t.caseIdx]||"Case "+t.caseIdx}</span><span style={{ color:S.accent, fontSize:12, fontWeight:600 }}>{t.minutes} min</span></div>)}
+                  </div>
+                )}
               </div>
-            )}
-          </div>
+            </div>
+          ):(
+            <div>
+              <div style={{ display:"flex", gap:8, marginBottom:12, flexWrap:"wrap" }}>
+                <input type="text" value={filter} onChange={e=>setFilter(e.target.value)} placeholder="Search by name, ID, or class…"
+                  style={{ flex:1, minWidth:160, background:S.card, border:"1px solid "+S.border, borderRadius:6, padding:"10px 12px", color:S.textPrimary, fontSize:13, outline:"none", boxSizing:"border-box" }}/>
+                <select value={classFilter} onChange={e=>setClassFilter(e.target.value)}
+                  style={{ background:S.card, border:"1px solid "+S.border, borderRadius:6, padding:"10px 12px", color:S.textPrimary, fontSize:13, outline:"none", cursor:"pointer" }}>
+                  <option value="">All Classes</option>
+                  {[...new Set(students.map(s=>s.class))].sort().map(c=><option key={c} value={c}>Class {c}</option>)}
+                </select>
+              </div>
+              <div style={{ background:S.cardAlt, border:"1px solid "+S.border, borderRadius:10, overflow:"hidden" }}>
+                {filtered.filter(s=>!classFilter||s.class===classFilter).length===0?(
+                  <div style={{ padding:40, textAlign:"center", color:S.textMuted }}>{filter||classFilter?"No students match your search":"No students registered yet"}</div>
+                ):(
+                  <div style={{ maxHeight:500, overflowY:"auto" }}>
+                    {filtered.filter(s=>!classFilter||s.class===classFilter).map((student,i,arr)=>(
+                      <div key={student.id} onClick={()=>setSelectedStudent(student)} style={{ padding:"12px 16px", borderBottom:i<arr.length-1?"1px solid "+S.border:"none", cursor:"pointer", transition:"background 0.2s" }} onMouseEnter={e=>e.currentTarget.style.background=S.accent+"08"} onMouseLeave={e=>e.currentTarget.style.background="transparent"}>
+                        <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", gap:10 }}>
+                          <div style={{ flex:1 }}>
+                            <div style={{ display:"flex", gap:12, alignItems:"center", marginBottom:4 }}>
+                              <span style={{ color:S.accent, fontSize:13, fontWeight:700, fontFamily:"'Georgia',serif" }}>{student.fullName}</span>
+                              <span style={{ color:S.textMuted, fontSize:10, fontFamily:"'Courier New',monospace" }}>({student.displayName})</span>
+                            </div>
+                            <div style={{ display:"flex", gap:14, fontSize:11, color:S.textSecondary, flexWrap:"wrap" }}>
+                              <span>📚 Class: <strong style={{ color:S.textPrimary }}>{student.class}</strong></span>
+                              <span>✅ Cases: <strong style={{ color:S.accent }}>{(student.casesCompleted||[]).length}/3</strong></span>
+                              <span>🕐 {new Date(student.timestamp).toLocaleString()}</span>
+                            </div>
+                          </div>
+                          <div style={{ display:"flex", alignItems:"center", gap:8 }}>
+                            <span style={{ color:S.textMuted, fontSize:18 }}>›</span>
+                            {confirmDelete===student.id?(
+                              <div style={{ display:"flex", alignItems:"center", gap:5 }} onClick={e=>e.stopPropagation()}>
+                                <span style={{ color:S.red, fontSize:10, fontFamily:"'Courier New',monospace" }}>Delete?</span>
+                                <button onClick={e=>{e.stopPropagation();deleteStudent(student.id);}} style={{ background:S.red, border:"none", borderRadius:4, padding:"3px 8px", cursor:"pointer", color:"#fff", fontSize:10, fontWeight:700 }}>Yes</button>
+                                <button onClick={e=>{e.stopPropagation();setConfirmDelete(null);}} style={{ background:"transparent", border:"1px solid "+S.border, borderRadius:4, padding:"3px 8px", cursor:"pointer", color:S.textMuted, fontSize:10 }}>No</button>
+                              </div>
+                            ):(
+                              <button onClick={e=>{e.stopPropagation();setConfirmDelete(student.id);}} style={{ background:"transparent", border:"1px solid "+S.red+"44", borderRadius:5, padding:"4px 8px", cursor:"pointer", color:S.red, fontSize:11, transition:"all 0.2s" }} onMouseEnter={e=>{e.stopPropagation();e.currentTarget.style.background=S.red+"12";}} onMouseLeave={e=>e.currentTarget.style.background="transparent"} title="Delete this student">
+                                🗑️
+                              </button>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
         </div>
       )}
     </div>
