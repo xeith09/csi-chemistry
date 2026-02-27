@@ -160,7 +160,7 @@ const CASES = [
         "AgNO₃ solution": { first: { text: "You add AgNO₃ solution. No precipitate forms — the solution stays clear.", visual: null } },
       },
       heating: { requiresReagent: "Aluminium foil", result: { text: "You heat the alkaline mixture with aluminium foil over the Bunsen burner. No pungent gas is produced.", visual: null } },
-      answer: { accepted: ["SO4 2-","SO₄²⁻","SO42-","SO4^2-","sulfate","Sulfate","SULFATE","sulfate ion","Sulfate ion","sulphate","Sulphate","SULPHATE","sulphate ion","Sulphate ion"] },
+      answer: { accepted: ["SO4 2-","SO₄²⁻","SO42-","SO4^2-","sulfate","Sulfate","SULFATE","sulfate ion","Sulfate ion","sulphate","Sulphate","SULPHATE","sulphate ion","Sulphate ion"], ionKey: "SO42-" },
       promptLabel: "What is the name or formula of the anion found in the wine?",
       placeholder: "anion name or formula like NO3-",
       hints: ["Start systematically — try NaOH with aluminium foil and heat. Does the mixture produce any pungent gas? Then try acidifying with dilute HNO₃ before adding Ba(NO₃)₂.", "No gas from the NaOH + Al + heat test rules out nitrate. You are looking for an anion that forms a white precipitate with Ba²⁺ ions that does NOT dissolve in dilute nitric acid.", "The answer is sulfate — the sulfate ion, SO₄²⁻. Barium sulfate (BaSO₄) is a white precipitate that is insoluble in dilute nitric acid."],
@@ -563,7 +563,7 @@ const ION_LABELS = {
   "Zn2+":"Zn²⁺","zinc":"Zn²⁺",
   "NH4+":"NH₄⁺","ammonium":"NH₄⁺",
   "NO3-":"NO₃⁻","nitrate":"NO₃⁻",
-  "SO42-":"SO₄²⁻","sulfate":"SO₄²⁻","sulphate":"SO₄²⁻",
+  "SO42-":"SO₄²⁻","SO4 2-":"SO₄²⁻","sulfate":"SO₄²⁻","sulphate":"SO₄²⁻","SO₄²⁻":"SO₄²⁻",
   "Cl-":"Cl⁻","chloride":"Cl⁻",
   "CO2":"CO₂","carbon dioxide":"CO₂",
   "SO2":"SO₂","sulfur dioxide":"SO₂","sulphur dioxide":"SO₂",
@@ -869,6 +869,7 @@ function PhaseRegister({ onRegister, onOpenDashboard }) {
 
   const handleSubmit = async () => {
     if(!name.trim()||!className.trim()||!preferredName.trim()){ setError("⚠️ All fields are required!"); setShake(true); setTimeout(()=>setShake(false),400); return; }
+    if(/\d/.test(name)){ setError("⚠️ Full name should not contain numbers!"); setShake(true); setTimeout(()=>setShake(false),400); return; }
     const baseId = getInitials(name).toLowerCase()+"_"+className.trim().toLowerCase().replace(/\s+/g,"_");
     const displayName = preferredName.trim();
     try {
