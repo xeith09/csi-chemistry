@@ -941,11 +941,8 @@ export default function App(){
       </div>
       {phase!=="select"&&<div style={{marginBottom:18}}><div style={{width:"100%",height:3,background:S.cardAlt,borderRadius:2,overflow:"hidden"}}><div style={{width:pct+"%",height:"100%",background:"linear-gradient(90deg,"+S.accent+",#e8c88a)",borderRadius:2,transition:"width 0.5s cubic-bezier(.4,0,.2,1)"}}/></div></div>}
       {content}
-<<<<<<< HEAD
+=======
       {showNotebook&&<Notebook notes={notes} onChange={setNotes} theme={theme}/>}
     </div>
   </div>;
 }
-=======
-      {showNotebook&&<Notebook notes={notes} onChange={setNotes} theme={theme}/>}
->>>>>>> f17cecb (fixed anion guide string encoding error)
