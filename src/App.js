@@ -302,6 +302,7 @@ const ION_LABELS = {
 };
 const CASE_IONS = {0:["Cu2+","NO3-","CO2"],1:["Zn2+","SO42-","SO2"],2:["NH4+","Cl-","NH3+HCl"]};
 const CASE_NAMES = ["The Ashworth Affair","The Blackwood Inheritance","The Thornfield Tragedy"];
+const SUSPECT_COLORS = ["#e11d48","#2563eb","#d97706","#16a34a","#9333ea","#0891b2"];
 
 function StyledButton({children,onClick,variant="primary",style:ex,disabled}){
   const v={primary:{background:"linear-gradient(135deg,"+S.accent+",#a07840)",color:"#1a1a2e",boxShadow:"0 3px 16px "+S.accentDim},ghost:{background:"transparent",color:S.accent,border:"1px solid "+S.accent+"55"},danger:{background:"linear-gradient(135deg,#dc2626,#991b1b)",color:"#fff",boxShadow:"0 3px 16px #dc262633"}};
