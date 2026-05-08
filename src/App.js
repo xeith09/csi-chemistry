@@ -945,7 +945,8 @@ export default function App(){
   const [showDashboard,setShowDashboard]=useState(false);
 
   const caseData=selectedCase!==null?CASES[selectedCase]:null;
-
+  const go=useCallback(next=>{setFade(false);setTimeout(()=>{setPhase(next);setFade(true);},280);},[]);
+  
   const selectCase=useCallback(idx=>{
     setSelectedCase(idx);
     setCaseBoard([]);
