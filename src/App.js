@@ -574,19 +574,44 @@ function PhaseRegister({onRegister,onOpenDashboard}){
   const [name,setName]=useState("");const [className,setClassName]=useState("");const [preferredName,setPreferredName]=useState("");const [error,setError]=useState("");const [shake,setShake]=useState(false);const [clickCount,setClickCount]=useState(0);const [showPw,setShowPw]=useState(false);
   const getInitials=n=>n.trim().split(/\s+/).map(w=>w.charAt(0).toUpperCase()).join("");
   const handleSubmit=async()=>{
-    if(!name.trim()||!className.trim()||!preferredName.trim()){setError("All fields are required!");setShake(true);setTimeout(()=>setShake(false),400);return;}
-    if(/\d/.test(name)){setError("Full name should not contain numbers!");setShake(true);setTimeout(()=>setShake(false),400);return;}
-    const baseId=getInitials(name).toLowerCase()+"_"+className.trim().toLowerCase().replace(/\s+/g,"_");
-    const displayName=preferredName.trim();
-    try{
-      let finalId=baseId;
-      const existing=await getDoc(doc(db,"students",baseId));
-      if(existing.exists()){let suffix=2;while((await getDoc(doc(db,"students",baseId+"_"+suffix))).exists())suffix++;finalId=baseId+"_"+suffix;}
-      const data={fullName:name.trim(),displayName,class:className.trim(),id:finalId,timestamp:new Date().toISOString(),casesCompleted:[],ionAttempts:[],caseTimes:[]};
-      await setDoc(doc(db,"students",finalId),data);
-      onRegister(data);
-    }catch(e){setError("Error: "+e.message);}
+  if(!name.trim()||!className.trim()||!preferredName.trim()){
+    setError("All fields are required!");
+    setShake(true);
+    setTimeout(()=>setShake(false),400);
+    return;
+  }
+
+  if(/\d/.test(name)){
+    setError("Full name should not contain numbers!");
+    setShake(true);
+    setTimeout(()=>setShake(false),400);
+    return;
+  }
+
+  const baseId=getInitials(name).toLowerCase()+"_"+className.trim().toLowerCase().replace(/\s+/g,"_");
+  const displayName=preferredName.trim();
+
+  const data={
+    fullName:name.trim(),
+    displayName,
+    class:className.trim(),
+    id:baseId+"_"+Date.now(),
+    timestamp:new Date().toISOString(),
+    casesCompleted:[],
+    ionAttempts:[],
+    caseTimes:[]
   };
+
+  // Proceed immediately
+  onRegister(data);
+
+  // Save to Firebase in the background
+  try{
+    await setDoc(doc(db,"students",data.id),data);
+  }catch(e){
+    console.error("Firebase save failed:",e);
+  }
+};
   return <div style={{animation:shake?"shake 0.4s ease":"none"}}>
     <div onClick={()=>{const n=clickCount+1;setClickCount(n);if(n>=5){setShowPw(true);setClickCount(0);}}} style={{position:"absolute",top:10,right:10,width:20,height:20,opacity:0.15,cursor:"pointer",fontSize:14}} title="Teacher access">🔑</div>
     {showPw&&<PasswordPrompt onSuccess={()=>{setShowPw(false);onOpenDashboard();}} onCancel={()=>setShowPw(false)}/>}
@@ -974,7 +999,12 @@ export default function App(){
 
   let content;
   if(showDashboard)content=<TeacherDashboard onBack={()=>setShowDashboard(false)}/>;
-  else if(phase==="register")content=<PhaseRegister onRegister={d=>{setDetective(d);go("select");}} onOpenDashboard={()=>setShowDashboard(true)}/>;
+  else if(phase==="register")content=<PhaseRegister onRegister={d=>{
+  console.log("REGISTERED:",d);
+  setDetective(d);
+  setPhase("select");
+  setFade(true);
+}} onOpenDashboard={()=>setShowDashboard(true)}/>;
   else if(phase==="select")content=<PhaseCaseSelect onSelect={selectCase} detectiveName={detective&&detective.displayName||"Detective"} theme={theme}/>;
   else if(phase==="intro"&&caseData)content=<PhaseIntro caseData={caseData} onStart={()=>go("station0")} onBack={()=>go("select")} suspectColors={suspectColors}/>;
   else if(phase in stationPhases&&caseData)content=<PhaseStation key={phase} station={caseData.stations[stationPhases[phase]]} onSolved={pinEvidence} caseIdx={selectedCase} detectiveId={detective&&detective.id} theme={theme}/>;
