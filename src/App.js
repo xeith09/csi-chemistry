@@ -395,7 +395,6 @@ function LimewaterSetup({active=false}){
   </div>;
 }
 
-function GasTestVisual({testItem,result,theme="dark"}){
   const getTestLabel=(id)=>{
     const labels={
       "litmus_red":"DAMP RED LITMUS","litmus_blue":"DAMP BLUE LITMUS",
@@ -946,7 +945,6 @@ export default function App(){
   const [showDashboard,setShowDashboard]=useState(false);
 
   const caseData=selectedCase!==null?CASES[selectedCase]:null;
-  const go=useCallback(next=>{setFade(false);setTimeout(()=>{setPhase(next);setFade(true);},280);},[]);
 
   const selectCase=useCallback(idx=>{
     setSelectedCase(idx);
