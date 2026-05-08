@@ -973,21 +973,27 @@ export default function App(){
   const go=useCallback(next=>{setFade(false);setTimeout(()=>{setPhase(next);setFade(true);},280);},[]);
 
   const selectCase = useCallback((idx)=>{
-  setSelectedCase(idx);
-  setCaseBoard([]);
-  setNotes("");
+    console.log("SELECTED CASE:", idx);
 
-  const shuffled = shuffleArray(SUSPECT_COLORS);
-  const colors = {};
-  CASES[idx].suspects.forEach((s,i)=>{
-    colors[s.id] = shuffled[i % shuffled.length];
-  });
+    setSelectedCase(idx);
+    setCaseBoard([]);
+    setNotes("");
 
-  setSuspectColors(colors);
+    const shuffled = shuffleArray(SUSPECT_COLORS);
+    const colors = {};
 
-  setPhase("intro");
-  setFade(true);
-},[]);
+    CASES[idx].suspects.forEach((s,i)=>{
+      colors[s.id] = shuffled[i % shuffled.length];
+    });
+
+    setSuspectColors(colors);
+
+    setTimeout(()=>{
+      setPhase("intro");
+      setFade(true);
+    },0);
+
+  },[]);
   const pinEvidence=useCallback(evidence=>{setCaseBoard(prev=>prev.find(e=>e.label===evidence.label)?prev:[...prev,evidence]);const map={station0:"board0",station1:"board1",station2:"board2"};if(map[phase])go(map[phase]);},[phase]);
 
   const stationPhases={station0:0,station1:1,station2:2};
@@ -1006,7 +1012,7 @@ export default function App(){
   setFade(true);
 }} onOpenDashboard={()=>setShowDashboard(true)}/>;
   else if(phase==="select")content=<PhaseCaseSelect onSelect={selectCase} detectiveName={detective&&detective.displayName||"Detective"} theme={theme}/>;
-  else if(phase==="intro"&&caseData)content=<PhaseIntro caseData={caseData} onStart={()=>go("station0")} onBack={()=>go("select")} suspectColors={suspectColors}/>;
+  else if(phase==="intro")content=<PhaseIntro caseData={caseData || CASES[selectedCase]} onStart={()=>go("station0")} onBack={()=>go("select")} suspectColors={suspectColors}/>;
   else if(phase in stationPhases&&caseData)content=<PhaseStation key={phase} station={caseData.stations[stationPhases[phase]]} onSolved={pinEvidence} caseIdx={selectedCase} detectiveId={detective&&detective.id} theme={theme}/>;
   else if(phase in boardPhases&&caseData)content=<PhaseCaseBoard caseData={caseData} caseBoard={caseBoard} onContinue={()=>go(boardNext[phase])} isFinal={boardPhases[phase]===2}/>;
   else if(phase==="accusation"&&caseData)content=<PhaseAccusation caseData={caseData} onVerdict={()=>go("debrief")} onCaseSolved={()=>setSolvedCases(prev=>new Set([...prev,selectedCase]))} detectiveId={detective&&detective.id} suspectColors={suspectColors}/>;
