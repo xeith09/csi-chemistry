@@ -15,15 +15,29 @@ const LIGHT = {
 };
 let S = {...DARK};
 
-const SUSPECT_COLORS = ["#2563eb","#059669","#d97706","#8b5cf6"];
+// Chemical formula formatter
+const fmt = s => s
+  .replace(/Cu2\+/g,"Cu²⁺").replace(/Zn2\+/g,"Zn²⁺").replace(/Fe2\+/g,"Fe²⁺").replace(/Fe3\+/g,"Fe³⁺")
+  .replace(/Al3\+/g,"Al³⁺").replace(/Ca2\+/g,"Ca²⁺").replace(/NH4\+/g,"NH₄⁺")
+  .replace(/NO3-/g,"NO₃⁻").replace(/SO42-/g,"SO₄²⁻").replace(/SO4 2-/g,"SO₄²⁻")
+  .replace(/CO32-/g,"CO₃²⁻").replace(/Cl-/g,"Cl⁻").replace(/I-/g,"I⁻")
+  .replace(/OH-/g,"OH⁻").replace(/H2O/g,"H₂O").replace(/CO2/g,"CO₂")
+  .replace(/SO2/g,"SO₂").replace(/NH3/g,"NH₃").replace(/HCl/g,"HCl")
+  .replace(/NaOH/g,"NaOH").replace(/Ba\(NO3\)2/g,"Ba(NO₃)₂")
+  .replace(/AgNO3/g,"AgNO₃").replace(/HNO3/g,"HNO₃")
+  .replace(/KMnO4/g,"KMnO₄").replace(/NH4Cl/g,"NH₄Cl")
+  .replace(/Cu\(OH\)2/g,"Cu(OH)₂").replace(/Zn\(OH\)2/g,"Zn(OH)₂")
+  .replace(/CaCO3/g,"CaCO₃").replace(/BaSO4/g,"BaSO₄")
+  .replace(/AgCl/g,"AgCl").replace(/AgI/g,"AgI")
+  .replace(/Ca\(HCO3\)2/g,"Ca(HCO₃)₂").replace(/CaCl2/g,"CaCl₂");
 
 function shuffleArray(a){const s=[...a];for(let i=s.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[s[i],s[j]]=[s[j],s[i]];}return s;}
 
 const ANION_GUIDE = [
-  {step:"Step 1", tip:"Add dilute HNO\u2083 first — removes CO\u2083\u00b2\u207b ions to avoid false positives."},
-  {step:"Step 2", tip:"Add Ba(NO\u2083)\u2082 solution — white ppt insoluble in HNO\u2083 confirms SO\u2084\u00b2\u207b."},
-  {step:"Step 3", tip:"Add AgNO\u2083 solution — white ppt confirms Cl\u207b; yellow ppt confirms I\u207b."},
-  {step:"Step 4", tip:"Add NaOH + aluminium foil, then heat — pungent gas turning damp red litmus blue confirms NO\u2083\u207b."},
+  {step:"Test for CO\u2083\u00b2\u207b", tip:"Add dilute HNO\u2083 to the sample. If effervescence occurs, CO\u2083\u00b2\u207b is present. This step also removes CO\u2083\u00b2\u207b to prevent false positives in subsequent tests."},
+  {step:"Test for SO\u2084\u00b2\u207b", tip:"In a fresh test tube, add dilute HNO\u2083 first, then add Ba(NO\u2083)\u2082 solution. A white precipitate that is insoluble in dilute HNO\u2083 confirms SO\u2084\u00b2\u207b."},
+  {step:"Test for Cl\u207b / I\u207b", tip:"In a fresh test tube, add dilute HNO\u2083 first, then add AgNO\u2083 solution. White precipitate = Cl\u207b. Yellow precipitate = I\u207b."},
+  {step:"Test for NO\u2083\u207b", tip:"In a fresh test tube, add NaOH solution, then aluminium foil, then heat. A pungent gas that turns damp red litmus paper blue confirms NO\u2083\u207b."},
 ];
 
 const CASES = [
@@ -46,16 +60,16 @@ const CASES = [
       objects:[{id:"vial_a",label:"Vial — SAMPLE A",icon:"🧫",pickup:true},{id:"bunsen_burner",label:"Bunsen Burner",icon:"🔥",pickup:false}],
       reagents:["NaOH solution","Aqueous NH3"],
       reactions:{
-        "NaOH solution":{first:{text:"You add a few drops of NaOH solution. A LIGHT BLUE precipitate forms immediately.",visual:{type:"ppt",color:"#7dd3fc"}},excess:{text:"You add excess NaOH solution. The light blue precipitate does NOT dissolve.",visual:{type:"ppt",color:"#7dd3fc"}}},
-        "Aqueous NH3":{first:{text:"You add a few drops of aqueous ammonia. A LIGHT BLUE precipitate forms.",visual:{type:"ppt",color:"#7dd3fc"}},excess:{text:"You add excess ammonia. The light blue precipitate DISSOLVES and the solution turns DARK BLUE.",visual:{type:"solution",color:"#1e3a8a"}}},
+        "NaOH solution":{first:{text:"You add a few drops of NaOH solution. A LIGHT BLUE precipitate forms immediately.",visual:{type:"ppt",color:"#7dd3fc"}},excess:{text:"You add excess NaOH solution. The light blue precipitate does NOT dissolve — it remains insoluble in excess.",visual:{type:"ppt",color:"#7dd3fc"}}},
+        "Aqueous NH3":{first:{text:"You add a few drops of aqueous NH₃. A LIGHT BLUE precipitate forms.",visual:{type:"ppt",color:"#7dd3fc"}},excess:{text:"You add excess aqueous NH₃. The light blue precipitate DISSOLVES — the solution turns DARK BLUE.",visual:{type:"solution",color:"#1e3a8a"}}},
       },
-      heating:{requiresReagent:["NaOH solution","Aqueous NH3"],result:{textWithPrecipitate:"You warm the mixture. The light blue precipitate remains unchanged.",textWithoutPrecipitate:"You warm the mixture. The dark blue solution remains unchanged.",visual:{type:"heating",bubbles:false}}},
+      heating:{requiresReagent:["NaOH solution","Aqueous NH3"],result:{textWithPrecipitate:"You warm the mixture. The light blue precipitate remains unchanged — insoluble in excess.",textWithoutPrecipitate:"You warm the mixture. The dark blue solution remains unchanged.",visual:{type:"heating",bubbles:false}}},
       answer:{accepted:["Cu2+","Cu2+","copper(II)","Copper(II)"],partialCredit:["Cu+2","Cu 2+","copper II","copper 2+","copper(ii)"]},
       promptLabel:"What is the name or formula of the cation found?",
       placeholder:"Enter name or formula",
-      hints:["Focus on the difference between adding NaOH and NH3 in excess. What happens differently to the precipitate?","The ion produces a light blue precipitate. Check whether it dissolves or stays when you add more reagent.","The answer is copper(II) — Cu2+. Light blue ppt with both NaOH and NH3, but only dissolves in excess NH3 to give dark blue solution."],
-      solvedMessage:"Cu2+ confirmed in the food. Copper(II) ions are highly toxic.",
-      evidence:{label:"Cu2+ in food",detail:"Copper(II) ions found in the stew.",icon:"☠️"},
+      hints:["Focus on what happens when you add excess NaOH vs excess NH₃. Does the precipitate dissolve or remain?","The ion produces a light blue precipitate. Check whether it dissolves in excess NaOH and excess NH₃.","The answer is copper(II) — Cu²⁺. Light blue ppt with both NaOH and NH₃, but only dissolves in excess NH₃ to give a deep blue solution."],
+      solvedMessage:"Cu²⁺ confirmed in the food. Copper(II) ions are highly toxic.",
+      evidence:{label:"Cu²⁺ in food",detail:"Copper(II) ions found in the stew.",icon:"☠️"},
     },
     {
       id:"wellhouse",title:"The Well House",icon:"💧",
@@ -65,20 +79,20 @@ const CASES = [
       reagents:["NaOH solution","Aluminium foil","Dilute HNO3","AgNO3 solution","Ba(NO3)2 solution","Limewater"],
       isAnionStation:true,
       reactions:{
-        "Dilute HNO3":{first:{text:"You add a few drops of dilute HNO\u2083 to the sample. No fizzing observed — the solution stays clear. This rules out CO\u2083\u00b2\u207b ions.",visual:null}},
+        "Dilute HNO3":{first:{text:"You add a few drops of dilute HNO₃ to the sample. No fizzing observed — the solution stays clear. This rules out CO₃²⁻ ions.",visual:null}},
         "Limewater":{first:{text:"You add limewater to the sample. No precipitate forms — the solution stays clear.",visual:null}},
         "NaOH solution":{first:{text:"You add NaOH solution to the sample. The solution stays clear — no precipitate forms.",visual:null}},
         "Aluminium foil":{first_without_naoh:{text:"Nothing happens. Add NaOH solution first to create an alkaline environment before adding aluminium foil.",visual:null,warning:true},first_with_naoh:{text:"You add aluminium foil to the alkaline solution. The aluminium begins to react slowly, producing tiny bubbles. Heat the mixture with the Bunsen burner to speed up the reaction.",visual:{type:"bubbling",bubbles:true,color:"#7dd3fc55"}}},
-        "AgNO3 solution":{first:{text:"You add AgNO\u2083 solution to the sample. No precipitate forms — the solution stays clear.",visual:null}},
-        "Ba(NO3)2 solution":{first:{text:"You add Ba(NO\u2083)\u2082 solution to the sample. No precipitate forms — the solution stays clear.",visual:null}},
+        "AgNO3 solution":{first:{text:"You add AgNO₃ solution to the sample. No precipitate forms — the solution stays clear.",visual:null}},
+        "Ba(NO3)2 solution":{first:{text:"You add Ba(NO₃)₂ solution to the sample. No precipitate forms — the solution stays clear.",visual:null}},
       },
       heating:{requiresReagent:"Aluminium foil",result:{text:"You heat the mixture vigorously over the Bunsen burner. Bubbles form rapidly as the aluminium dissolves. A pungent gas is released from the mouth of the test tube.",visual:{type:"heating",bubbles:true},gasTest:"litmus_red_no3"}},
       answer:{accepted:["NO3-","NO3-","nitrate","nitrate ion"]},
       promptLabel:"What is the name or formula of the anion found?",
       placeholder:"Enter name or formula",
-      hints:["Which tests gave a reaction? Pay attention to the heating step — what was released?","When heated with aluminium in alkaline conditions, a pungent gas was released. What colour did red litmus turn?","The answer is nitrate — NO3-. The test: NO3- + Al + NaOH + heat produces NH3 gas, which turns red litmus blue."],
-      solvedMessage:"NO3- confirmed in the well water.",
-      evidence:{label:"NO3- in well water",detail:"Nitrate ions at toxic concentrations found in the water.",icon:"💧"},
+      hints:["Which tests gave a reaction? Pay attention to the heating step — what was released?","When heated with aluminium in alkaline conditions, a pungent gas was released. What colour did damp red litmus turn?","The answer is nitrate — NO₃⁻. The test: NO₃⁻ + Al + NaOH + heat produces NH₃ gas, which turns damp red litmus blue."],
+      solvedMessage:"NO₃⁻ confirmed in the well water.",
+      evidence:{label:"NO₃⁻ in well water",detail:"Nitrate ions at toxic concentrations found in the water.",icon:"💧"},
     },
     {
       id:"study",title:"The Study",icon:"📖",
@@ -89,17 +103,17 @@ const CASES = [
       gasTests:{
         "litmus_red":{text:"You hold damp red litmus paper near the gas. Nothing happens — the paper stays red.",visual:null},
         "litmus_blue":{text:"You hold damp blue litmus paper near the gas. Nothing obvious happens — the paper stays blue.",visual:null},
-        "limewater_tube":{text:"A white precipitate forms in the limewater! On further bubbling, the precipitate dissolves and the solution turns colourless again.",visual:{type:"solution",color:"#d1d5db"}},
+        "limewater_tube":{text:"A white precipitate (CaCO₃) forms in the limewater! On further bubbling, the precipitate dissolves and the solution turns colourless — forming Ca(HCO₃)₂.",visual:{type:"solution",color:"#d1d5db"}},
         "splint_burning":{text:"You hold a burning splint to the gas. The flame is EXTINGUISHED immediately — no pop sound.",visual:null},
         "splint_glowing":{text:"You hold a glowing splint in the gas. It does NOT relight.",visual:null},
-        "kmno4_paper":{text:"You hold acidified KMnO4 paper near the gas. The purple colour does NOT change.",visual:null},
+        "kmno4_paper":{text:"You hold acidified KMnO₄ paper near the gas. The purple colour does NOT change.",visual:null},
       },
       answer:{accepted:["CO2","CO2","carbon dioxide"]},
       promptLabel:"What is the name or formula of the gas?",
       placeholder:"Enter name or formula",
-      hints:["Which test produced a visible change? That is your strongest clue.","The gas causes limewater to form a white precipitate that dissolves on further bubbling.","The answer is CO2. It reacts with limewater to form CaCO3 (white ppt), which dissolves with excess CO2 to form Ca(HCO3)2."],
-      solvedMessage:"CO2 confirmed. The canister flooded the sealed study with carbon dioxide.",
-      evidence:{label:"CO2 in study",detail:"CO2 canister hidden behind bookshelf. Sealed room caused asphyxiation.",icon:"🛢️"},
+      hints:["Which test produced a visible change? That is your strongest clue.","The gas causes limewater to form a white precipitate that dissolves on further bubbling.","The answer is CO₂. It reacts with limewater: CO₂ + Ca(OH)₂ → CaCO₃ (white ppt), which dissolves with excess CO₂ to form Ca(HCO₃)₂."],
+      solvedMessage:"CO₂ confirmed. The canister flooded the sealed study with carbon dioxide.",
+      evidence:{label:"CO₂ in study",detail:"CO₂ canister hidden behind bookshelf. Sealed room caused asphyxiation.",icon:"🛢️"},
     },
   ],
   accusationGuide:"You found Cu2+ in the food, NO3- in the water, and CO2 in the study. Connect the chemistry to the suspects' backgrounds.",
@@ -128,16 +142,16 @@ const CASES = [
       objects:[{id:"vial_c",label:"Vial — SAMPLE C",icon:"🧫",pickup:true},{id:"bunsen_burner",label:"Bunsen Burner",icon:"🔥",pickup:false}],
       reagents:["NaOH solution","Aqueous NH3"],
       reactions:{
-        "NaOH solution":{first:{text:"You add a few drops of NaOH solution. A WHITE precipitate forms immediately.",visual:{type:"ppt",color:"#e2e8f0"}},excess:{text:"You add excess NaOH solution. The white precipitate DISSOLVES completely — colourless solution.",visual:{type:"solution",color:"transparent"}}},
-        "Aqueous NH3":{first:{text:"You add a few drops of aqueous ammonia. A WHITE precipitate forms.",visual:{type:"ppt",color:"#e2e8f0"}},excess:{text:"You add excess ammonia. The white precipitate DISSOLVES — colourless solution.",visual:{type:"solution",color:"transparent"}}},
+        "NaOH solution":{first:{text:"You add a few drops of NaOH solution. A WHITE precipitate forms immediately.",visual:{type:"ppt",color:"#e2e8f0"}},excess:{text:"You add excess NaOH solution. The white precipitate DISSOLVES — the solution becomes colourless. The hydroxide is soluble in excess NaOH.",visual:{type:"solution",color:"#e0e0e022"}}},
+        "Aqueous NH3":{first:{text:"You add a few drops of aqueous NH₃. A WHITE precipitate forms.",visual:{type:"ppt",color:"#e2e8f0"}},excess:{text:"You add excess aqueous NH₃. The white precipitate DISSOLVES — the solution becomes colourless. The hydroxide is soluble in excess NH₃.",visual:{type:"solution",color:"#e0e0e022"}}},
       },
-      heating:{requiresReagent:["NaOH solution","Aqueous NH3"],result:{textWithPrecipitate:"You warm the mixture. No change.",textWithoutPrecipitate:"You warm the mixture. No change.",visual:{type:"heating",bubbles:false}}},
+      heating:{requiresReagent:["NaOH solution","Aqueous NH3"],result:{textWithPrecipitate:"You warm the mixture. No change — the white precipitate remains.",textWithoutPrecipitate:"You warm the mixture. No change — the colourless solution remains.",visual:{type:"heating",bubbles:false}}},
       answer:{accepted:["Zn2+","Zn2+","zinc","Zinc"]},
       promptLabel:"What is the name or formula of the cation found?",
       placeholder:"Enter name or formula",
-      hints:["Compare what happens with excess NaOH vs excess NH3. Does the precipitate dissolve in both?","The precipitate dissolves in excess of BOTH NaOH and NH3. Which ion behaves this way?","The answer is zinc — Zn2+. Zinc hydroxide is amphoteric and dissolves in both excess NaOH and excess NH3."],
-      solvedMessage:"Zn2+ confirmed in the tea.",
-      evidence:{label:"Zn2+ in tea",detail:"Zinc ions found in the herbal tea.",icon:"☠️"},
+      hints:["Compare what happens with excess NaOH vs excess NH₃. Does the precipitate dissolve in both?","The precipitate dissolves in excess of BOTH NaOH and NH₃. Which ion behaves this way?","The answer is zinc — Zn²⁺. Zn(OH)₂ is amphoteric — it dissolves in both excess NaOH and excess NH₃ to form a colourless solution."],
+      solvedMessage:"Zn²⁺ confirmed in the tea.",
+      evidence:{label:"Zn²⁺ in tea",detail:"Zinc ions found in the herbal tea.",icon:"☠️"},
     },
     {
       id:"cellar",title:"The Wine Cellar",icon:"🍷",
@@ -381,6 +395,7 @@ function LimewaterSetup({active=false}){
   </div>;
 }
 
+function GasTestVisual({testItem,result,theme="dark"}){
   const getTestLabel=(id)=>{
     const labels={
       "litmus_red":"DAMP RED LITMUS","litmus_blue":"DAMP BLUE LITMUS",
@@ -682,6 +697,7 @@ function PhaseStation({station,onSolved,caseIdx,detectiveId,theme}){
     else if(isAgnoFirstStation&&reagent==="AgNO3 solution"&&reagentsAdded.includes("Dilute HNO3")){addLog("Fresh test tube with new sample — acidified first with dilute HNO\u2083, then "+rx.first_with_acid.text);updateVisual(rx.first_with_acid.visual);}
     else if(reagent==="Aluminium foil"&&reagentsAdded.includes("NaOH solution")&&rx&&rx.first_with_naoh){addLog(prefix+rx.first_with_naoh.text);updateVisual(rx.first_with_naoh.visual);}
     else if(rx&&rx.first){addLog(prefix+rx.first.text);updateVisual(rx.first.visual);}
+    else if(rx&&!rx.first&&!rx.first_with_naoh){addLog(prefix+"No reaction observed.");}
   };
 
   const heatSample=()=>{
@@ -871,8 +887,7 @@ function PhaseAccusation({caseData,onVerdict,onCaseSolved,detectiveId,suspectCol
     <div style={{textAlign:"center",marginBottom:18}}><span style={{fontSize:36}}>⚖️</span><h2 style={{margin:"6px 0 4px",fontFamily:"'Georgia',serif",fontSize:22,color:S.textPrimary}}>The Accusation</h2><p style={{color:S.textSecondary,fontSize:13,margin:0}}>Who murdered {caseData.victim.name}?</p></div>
     <div style={{background:S.cardAlt,border:"1px solid "+S.border,borderRadius:8,padding:"12px 14px",marginBottom:12}}><div style={{color:S.accent,fontSize:10,fontFamily:"'Courier New',monospace",letterSpacing:1.5,textTransform:"uppercase",marginBottom:6}}>🔍 Cross-Reference</div><p style={{color:S.textSecondary,fontSize:12.5,margin:0,lineHeight:1.65}}>{caseData.accusationGuide}</p></div>
     <div style={{marginBottom:14}}><button onClick={()=>setDossierOpen(!dossierOpen)} style={{background:S.accent+"0e",border:"1px solid "+S.accent+"33",borderRadius:6,padding:"7px 12px",cursor:"pointer",color:S.accent,fontSize:11,fontFamily:"'Courier New',monospace",width:"100%",textAlign:"left",display:"flex",justifyContent:"space-between"}}><span>📁 Review Suspect Dossiers</span><span>{dossierOpen?"▲":"▼"}</span></button>{dossierOpen&&<div style={{marginTop:8,display:"grid",gridTemplateColumns:"repeat(2, 1fr)",gap:8}}>{caseData.suspects.map(s=><SuspectCard key={s.id} suspect={s} isFlipped={dossierFlipped===s.id} onFlip={()=>setDossierFlipped(dossierFlipped===s.id?null:s.id)} color={suspectColors[s.id]}/>)}</div>}</div>}
-    {!submitted&&<><div style={{display:"grid",gridTemplateColumns:"repeat(2, 1fr)",gap:8,marginBottom:16}}>
-      {caseData.suspects.map(s=>{const sColor=suspectColors[s.id];return <button key={s.id} onClick={()=>setChosen(s.id)} style={{background:chosen===s.id?sColor+"18":S.card,border:"2px solid "+(chosen===s.id?sColor:S.border),borderRadius:8,padding:"10px 12px",cursor:"pointer",textAlign:"left",transition:"all 0.2s"}} onMouseEnter={e=>e.currentTarget.style.borderColor=sColor} onMouseLeave={e=>e.currentTarget.style.borderColor=chosen===s.id?sColor:S.border}><div style={{display:"flex",alignItems:"center",gap:8}}><span style={{fontSize:22}}>{s.portrait}</span><div><div style={{color:chosen===s.id?sColor:S.textPrimary,fontSize:13,fontWeight:700}}>{s.name}</div><div style={{color:S.textMuted,fontSize:10}}>{s.title}</div></div></div></button>;})  }
+    {!submitted&&<><div style={{display:"grid",gridTemplateColumns:"repeat(2, 1fr)",gap:8,marginBottom:16}}>      {caseData.suspects.map(s=>{const sColor=suspectColors[s.id];return <button key={s.id} onClick={()=>setChosen(s.id)} style={{background:chosen===s.id?sColor+"18":S.card,border:"2px solid "+(chosen===s.id?sColor:S.border),borderRadius:8,padding:"10px 12px",cursor:"pointer",textAlign:"left",transition:"all 0.2s"}} onMouseEnter={e=>e.currentTarget.style.borderColor=sColor} onMouseLeave={e=>e.currentTarget.style.borderColor=chosen===s.id?sColor:S.border}><div style={{display:"flex",alignItems:"center",gap:8}}><span style={{fontSize:22}}>{s.portrait}</span><div><div style={{color:chosen===s.id?sColor:S.textPrimary,fontSize:13,fontWeight:700}}>{s.name}</div><div style={{color:S.textMuted,fontSize:10}}>{s.title}</div></div></div></button>;})  }
     </div><StyledButton onClick={()=>setSubmitted(true)} variant="danger" disabled={!chosen} style={{width:"100%"}}>🚨 I Accuse {chosen?caseData.suspects.find(s=>s.id===chosen).name:"…"}</StyledButton></>}
     {submitted&&<div style={{animation:"pinIn 0.5s ease"}}>
       {chosen===correct.id?<div style={{background:"#14532d",border:"1px solid #22c55e55",borderRadius:10,padding:"22px 20px",textAlign:"center"}}><div style={{fontSize:44,marginBottom:6}}>🏆</div><h3 style={{color:"#4ade80",fontFamily:"'Georgia',serif",fontSize:22,margin:"0 0 10px"}}>CASE SOLVED</h3><p style={{color:"#86efac",fontSize:13.5,margin:0,lineHeight:1.7}}>{caseData.guilty}</p></div>
