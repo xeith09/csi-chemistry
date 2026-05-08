@@ -198,12 +198,12 @@ const CASES = [
       evidence:{label:"SO2 in conservatory",detail:"Flask of sulfur dioxide gas hidden behind a fern.",icon:"🫙"},
     },
   ],
-  accusationGuide:"You found Zn2+ in the tea, SO42- in the wine, and SO2 in the conservatory. Connect the chemistry to the suspects.",
-  guilty:"Lady Margaret Blackwood is guilty.\n\nEVIDENCE: Zn2+ in tea and SO42- in wine — both from zinc sulfate. SO2 from sulfur candles.\n\nMOTIVE: Gambling debts; Oliver refused to release her inheritance.\n\nCONNECTION: Purchased 5kg zinc sulfate. Sulfur candles from her garden shed produced SO2.",
+  accusationGuide:"You found Zn²⁺ in the tea, SO₄²⁻ in the wine, and SO₂ in the conservatory. Connect the chemistry to the suspects.",
+  guilty:"Lady Margaret Blackwood is guilty.\n\nEVIDENCE: Zn²⁺ in tea and SO₄²⁻ in wine — both from zinc sulfate. SO₂ from sulfur candles.\n\nMOTIVE: Gambling debts; Oliver refused to release her inheritance.\n\nCONNECTION: Purchased 5kg zinc sulfate. Sulfur candles from her garden shed produced SO₂.",
   debrief:[
-    {scenario:"Poisoned tea (Greenhouse)",ion:"Zn2+",realWorld:"Zinc poisoning is a real forensic concern. Zinc salts cause acute organ damage at high doses.",tests:[{reagent:"NaOH (few drops)",result:"White ppt forms"},{reagent:"NaOH (excess)",result:"Ppt DISSOLVES (amphoteric)"},{reagent:"Aqueous NH3 (few drops)",result:"White ppt forms"},{reagent:"Aqueous NH3 (excess)",result:"Ppt DISSOLVES"}]},
-    {scenario:"Contaminated wine (Cellar)",ion:"SO42-",realWorld:"Sulfate testing is fundamental in water and beverage quality analysis.",tests:[{reagent:"Dilute HNO3 (first)",result:"No fizzing — confirms no carbonate interference"},{reagent:"Ba(NO3)2 solution",result:"White ppt (BaSO4) — insoluble in HNO3"},{reagent:"Key rule",result:"Always acidify FIRST, then add Ba(NO3)2"}]},
-    {scenario:"Toxic gas weapon (Conservatory)",ion:"SO2",realWorld:"SO2 is a major industrial pollutant. At toxic concentrations it is lethal.",tests:[{reagent:"Damp blue litmus",result:"Turns RED (acidic gas)"},{reagent:"Acidified KMnO4",result:"DECOLOURISES (reducing agent)"},{reagent:"Limewater",result:"No change (distinguishes from CO2)"}]},
+    {scenario:"Poisoned tea (Greenhouse)",ion:"Zn²⁺",realWorld:"Zinc poisoning is a real forensic concern. Zinc salts cause acute organ damage at high doses.",tests:[{reagent:"NaOH (few drops)",result:"White ppt forms"},{reagent:"NaOH (excess)",result:"Ppt DISSOLVES — soluble in excess NaOH (amphoteric)"},{reagent:"Aqueous NH₃ (few drops)",result:"White ppt forms"},{reagent:"Aqueous NH₃ (excess)",result:"Ppt DISSOLVES — soluble in excess NH₃"}]},
+    {scenario:"Contaminated wine (Cellar)",ion:"SO₄²⁻",realWorld:"Sulfate testing is fundamental in water and beverage quality analysis.",tests:[{reagent:"Dilute HNO₃ (first)",result:"No fizzing — rules out CO₃²⁻"},{reagent:"Ba(NO₃)₂ solution",result:"White ppt (BaSO₄) — insoluble in dilute HNO₃"},{reagent:"Key rule",result:"Always acidify with HNO₃ FIRST, then add Ba(NO₃)₂"}]},
+    {scenario:"Toxic gas weapon (Conservatory)",ion:"SO₂",realWorld:"SO₂ is a major industrial pollutant. At toxic concentrations it is lethal.",tests:[{reagent:"Damp blue litmus",result:"Turns RED (acidic gas)"},{reagent:"Acidified KMnO₄",result:"DECOLOURISES to colourless (reducing agent)"},{reagent:"Limewater",result:"No change (distinguishes from CO₂)"}]},
   ],
 },
 {
@@ -232,9 +232,9 @@ const CASES = [
       answer:{accepted:["NH4+","NH4+","ammonium","ammonium ion"]},
       promptLabel:"What is the name or formula of the cation found?",
       placeholder:"Enter name or formula",
-      hints:["You added NaOH and detected a pungent smell. Try warming the mixture, then test the gas with damp red litmus paper.","The pungent gas that turns red litmus blue is ammonia. Which cation produces ammonia when warmed with NaOH?","The answer is ammonium — NH4+. Ammonium salts warmed with NaOH release NH3 gas, which turns damp red litmus blue."],
-      solvedMessage:"NH4+ confirmed in the tea.",
-      evidence:{label:"NH4+ in tea",detail:"Ammonium ions at toxic concentrations. Ammonium salts resemble sugar crystals.",icon:"☠️"},
+      hints:["You added NaOH and detected a pungent smell. Try warming the mixture, then test the gas with damp red litmus paper.","The pungent gas that turns damp red litmus blue is NH₃. Which cation produces NH₃ when warmed with NaOH?","The answer is ammonium — NH₄⁺. NH₄⁺ salts warmed with NaOH release NH₃ gas, which turns damp red litmus blue."],
+      solvedMessage:"NH₄⁺ confirmed in the tea.",
+      evidence:{label:"NH₄⁺ in tea",detail:"Ammonium ions at toxic concentrations. Ammonium salts resemble sugar crystals.",icon:"☠️"},
     },
     {
       id:"library",title:"The Library",icon:"📚",
@@ -267,27 +267,27 @@ const CASES = [
       reagents:[],reactions:{},
       mixedGas:true,
       gasTests:{
-        "litmus_red_seq":{text:"Damp RED litmus paper turns BLUE — then turns RED again.",visual:{type:"solution",color:"#ef4444"},detectsGases:["NH3","HCl"]},
-        "litmus_blue_first":{text:"Damp BLUE litmus paper turns RED immediately.",visual:{type:"solution",color:"#ef4444"},warning:true,hint:"Try RED litmus paper first for a clearer sequence of changes."},
-        "kmno4_paper":{text:"Acidified KMnO4 paper — no change.",visual:null},
-        "limewater_tube":{text:"Limewater stays clear — no change.",visual:null},
-        "splint_burning":{text:"Burning splint EXTINGUISHES — no pop."},
-        "splint_glowing":{text:"Glowing splint does not relight."},
+        "litmus_red_seq":{text:"You hold damp RED litmus paper in the gas mixture. The paper turns BLUE — then turns RED again.",visual:{type:"solution",color:"#ef4444"},detectsGases:["NH3","HCl"]},
+        "litmus_blue_first":{text:"You hold damp BLUE litmus paper in the gas mixture. The paper turns RED immediately.",visual:{type:"solution",color:"#ef4444"},warning:true,hint:"Try using RED litmus paper first, THEN use blue litmus."},
+        "kmno4_paper":{text:"You hold acidified KMnO₄ paper in the gas mixture. No change — the purple colour remains.",visual:null},
+        "limewater_tube":{text:"You bubble the gas through limewater. No change — the limewater stays clear.",visual:null},
+        "splint_burning":{text:"You hold a burning splint in the gas mixture. The flame EXTINGUISHES — no pop sound heard."},
+        "splint_glowing":{text:"You hold a glowing splint in the gas mixture. The splint does not relight."},
       },
       answer:{accepted:[["NH3","HCl"],["NH3","HCl"],["ammonia","hydrogen chloride"],["HCl","NH3"],["HCl","NH3"],["hydrogen chloride","ammonia"]],requiresBoth:true},
       promptLabel:"What TWO gases are present? (separate with comma or 'and')",
       placeholder:"Enter the two gases",
-      hints:["Red litmus turned blue, then red again. What does this sequence mean? You are looking for TWO gases — one alkaline, one acidic.","Think about NH4+ and Cl-. What compound do these form? What happens when you heat it strongly?","The answers are NH3 and HCl. NH4Cl(s) decomposes on heating: NH4Cl = NH3 + HCl."],
-      solvedMessage:"NH3 and HCl confirmed. Heating ammonium chloride crystals produced this lethal gas mixture.",
-      evidence:{label:"NH3 + HCl gases",detail:"Both ammonia and hydrogen chloride identified from thermal decomposition of NH4Cl.",icon:"☠️"},
+      hints:["Damp red litmus turned BLUE then RED again. This means TWO gases are present — one alkaline, one acidic.","Think about NH₄⁺ and Cl⁻. What compound do these form? What happens when you heat it strongly?","The answers are NH₃ and HCl. NH₄Cl(s) ⇌ NH₃(g) + HCl(g) on heating."],
+      solvedMessage:"NH₃ and HCl confirmed. Heating NH₄Cl crystals produced this lethal gas mixture.",
+      evidence:{label:"NH₃ + HCl gases",detail:"Both NH₃ and HCl identified from thermal decomposition of NH₄Cl.",icon:"☠️"},
     },
   ],
-  accusationGuide:"You found NH4+ in the tea, Cl- in the water, and NH3 + HCl gases in the greenhouse. Connect the chemistry to the suspects.",
-  guilty:"Clara Ashford is guilty.\n\nEVIDENCE: NH4+ in tea + Cl- in water = ammonium chloride. Heated NH4Cl produced NH3 + HCl gases.\n\nMOTIVE: Sir Reginald discovered embezzlement and was filing criminal charges.\n\nCONNECTION: Former chemistry lab technician. Maintains greenhouse fertilisers including ammonium chloride.",
+  accusationGuide:"You found NH₄⁺ in the tea, Cl⁻ in the water, and NH₃ + HCl gases in the greenhouse. Connect the chemistry to the suspects.",
+  guilty:"Clara Ashford is guilty.\n\nEVIDENCE: NH₄⁺ in tea + Cl⁻ in water = ammonium chloride. Heated NH₄Cl produced NH₃ + HCl gases.\n\nMOTIVE: Sir Reginald discovered embezzlement and was filing criminal charges.\n\nCONNECTION: Former chemistry lab technician. Maintains greenhouse fertilisers including ammonium chloride.",
   debrief:[
-    {scenario:"Poisoned tea (Conservatory)",ion:"NH4+",realWorld:"Ammonium salt poisoning causes metabolic acidosis at high doses.",tests:[{reagent:"NaOH + heat",result:"NH3 gas released"},{reagent:"Damp red litmus",result:"Turns BLUE (alkaline gas)"},{reagent:"Key rule",result:"Warming is essential — reaction too slow at room temperature"}]},
-    {scenario:"Contaminated water (Library)",ion:"Cl-",realWorld:"Chloride testing is fundamental in water quality analysis.",tests:[{reagent:"Dilute HNO3 (first)",result:"No fizz — rules out carbonate"},{reagent:"AgNO3 solution",result:"White ppt (AgCl) — insoluble in HNO3"},{reagent:"Key rule",result:"Always acidify with HNO3 BEFORE adding AgNO3"}]},
-    {scenario:"Mixed gases (Greenhouse)",ion:"NH3 + HCl",realWorld:"Heating ammonium chloride: NH4Cl = NH3 + HCl. Extremely dangerous in enclosed spaces.",tests:[{reagent:"Red litmus first",result:"Turns BLUE (NH3), then RED (HCl)"},{reagent:"Blue litmus only",result:"Turns RED — misses NH3"},{reagent:"Connection",result:"NH4+ + Cl- = NH4Cl — source compound"}]},
+    {scenario:"Poisoned tea (Conservatory)",ion:"NH₄⁺",realWorld:"Ammonium salt poisoning causes metabolic acidosis at high doses.",tests:[{reagent:"NaOH + heat",result:"NH₃ gas released"},{reagent:"Damp red litmus",result:"Turns BLUE (alkaline gas confirms NH₃)"},{reagent:"Key rule",result:"Warming is essential — reaction too slow at room temperature"}]},
+    {scenario:"Contaminated water (Library)",ion:"Cl⁻",realWorld:"Chloride testing is fundamental in water quality analysis.",tests:[{reagent:"Dilute HNO₃ (first)",result:"No fizz — rules out CO₃²⁻"},{reagent:"AgNO₃ solution",result:"White ppt (AgCl) — insoluble in dilute HNO₃"},{reagent:"Key rule",result:"Always acidify with HNO₃ BEFORE adding AgNO₃"}]},
+    {scenario:"Mixed gases (Greenhouse)",ion:"NH₃ + HCl",realWorld:"Heating NH₄Cl: NH₄Cl ⇌ NH₃ + HCl. Extremely dangerous in enclosed spaces.",tests:[{reagent:"Damp red litmus first",result:"Turns BLUE (NH₃ arrives first — lower Mr=17), then RED (HCl arrives)"},{reagent:"Damp blue litmus only",result:"Turns RED — misses NH₃ detection"},{reagent:"Connection",result:"NH₄⁺ + Cl⁻ = NH₄Cl — the source compound"}]},
   ],
 },
 ];
@@ -900,13 +900,13 @@ function PhaseAccusation({caseData,onVerdict,onCaseSolved,detectiveId,suspectCol
 
 function PhaseDebrief({caseData,onRestart,onBackToSelect,solvedCases}){
   const examTips=[
-    "Cu\u00b2\u207a vs Zn\u00b2\u207a: Both give precipitates with NaOH. Cu(OH)\u2082 is light blue; Zn(OH)\u2082 is white. KEY: Cu\u00b2\u207a dissolves in excess NH\u2083 only. Zn\u00b2\u207a dissolves in excess of BOTH NaOH and NH\u2083.",
-    "NO\u2083\u207b vs SO\u2084\u00b2\u207b vs Cl\u207b: NO\u2083\u207b = Al + NaOH + heat gives NH\u2083 (damp red litmus turns blue). SO\u2084\u00b2\u207b = Ba(NO\u2083)\u2082 gives white ppt insoluble in acid. Cl\u207b = AgNO\u2083 gives white ppt insoluble in acid.",
-    "NO\u2083\u207b vs NH\u2084\u207a — COMMONLY CONFUSED! Both use NaOH + heat and produce NH\u2083. KEY: NO\u2083\u207b REQUIRES aluminium foil. NH\u2084\u207a needs NO aluminium.",
-    "CO\u2082 vs SO\u2082 vs NH\u2083+HCl: CO\u2082 turns limewater milky. SO\u2082 decolourises KMnO\u2084 and turns damp blue litmus red. NH\u2083 turns damp red litmus blue. HCl turns damp blue litmus red.",
-    "NH\u2083+HCl from NH\u2084Cl: Red litmus turns BLUE first (NH\u2083 has lower Mr=17, diffuses faster), then RED (HCl arrives). Always use damp red litmus first.",
-    "NH\u2084Cl thermal decomposition: NH\u2084Cl \u21cc NH\u2083 + HCl. Dangerous in enclosed spaces.",
-    "Gas tests use DAMP indicators held NEAR the gas — not dipped into solution.",
+    "Cu²⁺ vs Zn²⁺: Both give white/light blue ppts with NaOH. Cu(OH)₂ is light blue; Zn(OH)₂ is white. KEY: Cu²⁺ dissolves in excess NH₃ only (deep blue). Zn²⁺ dissolves in excess of BOTH NaOH and NH₃ (colourless).",
+    "NO₃⁻ vs SO₄²⁻ vs Cl⁻: NO₃⁻ = Al + NaOH + heat → NH₃ (damp red litmus turns blue). SO₄²⁻ = Ba(NO₃)₂ → white ppt (BaSO₄) insoluble in dilute HNO₃. Cl⁻ = AgNO₃ → white ppt (AgCl) insoluble in dilute HNO₃.",
+    "NO₃⁻ vs NH₄⁺ — COMMONLY CONFUSED! Both use NaOH + heat → NH₃ gas. KEY DIFFERENCE: NO₃⁻ test REQUIRES aluminium foil. NH₄⁺ test needs NO aluminium — NaOH + heat alone is sufficient.",
+    "CO₂ vs SO₂: Both are acidic, colourless gases. CO₂ turns limewater milky (CaCO₃ ppt). SO₂ decolourises acidified KMnO₄ and turns damp blue litmus red. Limewater does NOT change with SO₂.",
+    "NH₃ + HCl from NH₄Cl: Damp red litmus turns BLUE first (NH₃ has lower Mr = 17, diffuses faster), then RED (HCl, Mr = 36.5, arrives later). Always use damp red litmus first for this test.",
+    "NH₄Cl thermal decomposition: NH₄Cl(s) ⇌ NH₃(g) + HCl(g). This equilibrium is reversible — NH₃ and HCl recombine to form white NH₄Cl fumes when they meet.",
+    "Gas tests use DAMP indicators held NEAR the gas — not dipped into solution. The moisture is needed for the gas to dissolve and react with the indicator.",
   ];
   return <div>
     <div style={{textAlign:"center",marginBottom:18}}><span style={{fontSize:36}}>📋</span><h2 style={{margin:"6px 0 4px",fontFamily:"'Georgia',serif",fontSize:22,color:S.textPrimary}}>Chemistry Debrief</h2><p style={{color:S.textSecondary,fontSize:13,margin:0}}>Review the tests and their significance</p></div>
@@ -948,7 +948,16 @@ export default function App(){
   const caseData=selectedCase!==null?CASES[selectedCase]:null;
   const go=useCallback(next=>{setFade(false);setTimeout(()=>{setPhase(next);setFade(true);},280);},[]);
 
-  const selectCase=idx=>{setSelectedCase(idx);setCaseBoard([]);setNotes("");const shuffled=shuffleArray(SUSPECT_COLORS);const colors={};CASES[idx].suspects.forEach((s,i)=>{colors[s.id]=shuffled[i%shuffled.length];});setSuspectColors(colors);go("intro");};
+  const selectCase=useCallback(idx=>{
+    setSelectedCase(idx);
+    setCaseBoard([]);
+    setNotes("");
+    const shuffled=shuffleArray(SUSPECT_COLORS);
+    const colors={};
+    CASES[idx].suspects.forEach((s,i)=>{colors[s.id]=shuffled[i%shuffled.length];});
+    setSuspectColors(colors);
+    go("intro");
+  },[go]);
   const pinEvidence=useCallback(evidence=>{setCaseBoard(prev=>prev.find(e=>e.label===evidence.label)?prev:[...prev,evidence]);const map={station0:"board0",station1:"board1",station2:"board2"};if(map[phase])go(map[phase]);},[phase]);
 
   const stationPhases={station0:0,station1:1,station2:2};
