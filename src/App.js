@@ -945,7 +945,9 @@ export default function App(){
   const [showDashboard,setShowDashboard]=useState(false);
 
   const caseData=selectedCase!==null?CASES[selectedCase]:null;
-
+  const go = useCallback((nextPhase) => {
+    setPhase(nextPhase);
+  }, []);
   const selectCase=useCallback(idx=>{
     setSelectedCase(idx);
     setCaseBoard([]);
