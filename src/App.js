@@ -979,7 +979,9 @@ const pinEvidence = useCallback((evidence) => {
   const showNotebook=caseData&&phase!=="select"&&phase!=="debrief";
   const allPhases=["intro","station0","board0","station1","board1","station2","board2","accusation","debrief"];
   const pct=phase==="select"?0:Math.round((allPhases.indexOf(phase)/(allPhases.length-1))*100);
-
+    selectedCase !== null
+      ? CASES[selectedCase]
+      : null;
   let content;
   if(showDashboard)content=<TeacherDashboard onBack={()=>setShowDashboard(false)}/>;
   else if(phase==="register")content=<PhaseRegister onRegister={d=>{setDetective(d);go("select");}} onOpenDashboard={()=>setShowDashboard(true)}/>;
