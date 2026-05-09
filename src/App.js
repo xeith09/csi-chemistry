@@ -24,7 +24,7 @@ const fmt = s => s
   .replace(/OH-/g,"OH⁻").replace(/H2O/g,"H₂O").replace(/CO2/g,"CO₂")
   .replace(/SO2/g,"SO₂").replace(/NH3/g,"NH₃").replace(/HCl/g,"HCl")
   .replace(/NaOH/g,"NaOH").replace(/Ba\(NO3\)2/g,"Ba(NO₃)₂")
-  .replace(/AgNO3/g,"AgNO₃").replace(/HNO₃/g,"HNO₃")
+  .replace(/AgNO3/g,"AgNO₃").replace(/HNO3/g,"HNO₃")
   .replace(/KMnO4/g,"KMnO₄").replace(/NH4Cl/g,"NH₄Cl")
   .replace(/Cu\(OH\)2/g,"Cu(OH)₂").replace(/Zn\(OH\)2/g,"Zn(OH)₂")
   .replace(/CaCO3/g,"CaCO₃").replace(/BaSO4/g,"BaSO₄")
@@ -76,15 +76,15 @@ const CASES = [
       locationDesc:"A small stone building housing the estate's private well. The water supplies the kitchen and bathrooms.",
       policeReport:"WELL HOUSE — Sample B collected from the estate well.\n\nThe water shows a faint blue-green tint. Lord Ashworth had recurring stomach pains for two weeks prior.\n\nACTION: Test Sample B for anion contamination.",
       objects:[{id:"vial_b",label:"Vial — SAMPLE B",icon:"🧪",pickup:true},{id:"bunsen_burner",label:"Bunsen Burner",icon:"🔥",pickup:false},{id:"litmus_red_no3",label:"Damp Red Litmus Paper",icon:"🔴",pickup:true},{id:"litmus_blue_no3",label:"Damp Blue Litmus Paper",icon:"🔵",pickup:true}],
-      reagents:["NaOH solution","Aluminium foil","Dilute HNO₃","AgNO₃ solution","Ba(NO₃)₂ solution","Limewater"],
+      reagents:["NaOH solution","Aluminium foil","Dilute HNO3","AgNO3 solution","Ba(NO3)2 solution","Limewater"],
       isAnionStation:true,
       reactions:{
-        "Dilute HNO₃":{first:{text:"You add a few drops of dilute HNO₃ to the sample. No fizzing observed — the solution stays clear. This rules out CO₃²⁻ ions.",visual:null}},
+        "Dilute HNO3":{first:{text:"You add a few drops of dilute HNO₃ to the sample. No fizzing observed — the solution stays clear. This rules out CO₃²⁻ ions.",visual:null}},
         "Limewater":{first:{text:"You add limewater to the sample. No precipitate forms — the solution stays clear.",visual:null}},
         "NaOH solution":{first:{text:"You add NaOH solution to the sample. The solution stays clear — no precipitate forms.",visual:null}},
         "Aluminium foil":{first_without_naoh:{text:"Nothing happens. Add NaOH solution first to create an alkaline environment before adding aluminium foil.",visual:null,warning:true},first_with_naoh:{text:"You add aluminium foil to the alkaline solution. The aluminium begins to react slowly, producing tiny bubbles. Heat the mixture with the Bunsen burner to speed up the reaction.",visual:{type:"bubbling",bubbles:true,color:"#7dd3fc55"}}},
-        "AgNO₃ solution":{first:{text:"You add AgNO₃ solution to the sample. No precipitate forms — the solution stays clear.",visual:null}},
-        "Ba(NO₃)₂ solution":{first:{text:"You add Ba(NO₃)₂ solution to the sample. No precipitate forms — the solution stays clear.",visual:null}},
+        "AgNO3 solution":{first:{text:"You add AgNO₃ solution to the sample. No precipitate forms — the solution stays clear.",visual:null}},
+        "Ba(NO3)2 solution":{first:{text:"You add Ba(NO₃)₂ solution to the sample. No precipitate forms — the solution stays clear.",visual:null}},
       },
       heating:{requiresReagent:"Aluminium foil",result:{text:"You heat the mixture vigorously over the Bunsen burner. Bubbles form rapidly as the aluminium dissolves. A pungent gas is released from the mouth of the test tube.",visual:{type:"heating",bubbles:true},gasTest:"litmus_red_no3"}},
       answer:{accepted:["NO3-","NO3-","nitrate","nitrate ion"]},
@@ -158,21 +158,21 @@ const CASES = [
       locationDesc:"A stone cellar beneath the manor. An opened bottle of Bordeaux found beside Oliver's body. Sample collected.",
       policeReport:"WINE CELLAR — Sample D collected from an opened wine bottle found beside the body.\n\nThe wine appears darker than usual. The bottle was added to the cellar recently.\n\nACTION: Test Sample D for anion contamination.",
       objects:[{id:"vial_d",label:"Vial — SAMPLE D",icon:"🧪",pickup:true},{id:"bunsen_burner",label:"Bunsen Burner",icon:"🔥",pickup:false},{id:"litmus_red_cellar",label:"Damp Red Litmus Paper",icon:"🔴",pickup:true},{id:"litmus_blue_cellar",label:"Damp Blue Litmus Paper",icon:"🔵",pickup:true}],
-      reagents:["NaOH solution","Aluminium foil","Dilute HNO3","Ba(NO₃)₂ solution","AgNO3 solution","Limewater"],
+      reagents:["NaOH solution","Aluminium foil","Dilute HNO3","Ba(NO3)2 solution","AgNO3 solution","Limewater"],
       isAnionStation:true,
       reactions:{
         "NaOH solution":{first:{text:"You add NaOH solution. The solution stays clear — no precipitate forms.",visual:null}},
         "Aluminium foil":{first_without_naoh:{text:"Nothing happens. Add NaOH solution first.",visual:null,warning:true},first_with_naoh:{text:"You add aluminium foil. Slow reaction at room temperature. Try heating.",visual:null}},
         "Dilute HNO3":{first:{text:"You add dilute nitric acid. No fizzing — solution stays clear.",visual:null}},
         "Limewater":{first:{text:"You add limewater. Nothing happens.",visual:null}},
-        "Ba(NO₃)₂ solution":{first_without_acid:{text:"You add Ba(NO₃)₂ without acidifying first. A white precipitate forms — but this could be from carbonate ions. Acidify with dilute HNO3 first for a reliable result.",visual:{type:"ppt",color:"#e5e7eb"},warning:true},first_with_acid:{text:"You add Ba(NO₃)₂ to the acidified sample. A WHITE precipitate forms and does NOT dissolve in acid.",visual:{type:"ppt",color:"#e5e7eb"}}},
+        "Ba(NO3)2 solution":{first_without_acid:{text:"You add Ba(NO3)2 without acidifying first. A white precipitate forms — but this could be from carbonate ions. Acidify with dilute HNO3 first for a reliable result.",visual:{type:"ppt",color:"#e5e7eb"},warning:true},first_with_acid:{text:"You add Ba(NO3)2 to the acidified sample. A WHITE precipitate forms and does NOT dissolve in acid.",visual:{type:"ppt",color:"#e5e7eb"}}},
         "AgNO3 solution":{first:{text:"You add AgNO3 solution. No precipitate forms.",visual:null}},
       },
       heating:{requiresReagent:"Aluminium foil",result:{text:"You heat the alkaline mixture with aluminium. No pungent gas is produced.",visual:null}},
       answer:{accepted:["SO4 2-","SO42-","sulfate","Sulfate","sulphate","Sulphate"],ionKey:"SO42-"},
       promptLabel:"What is the name or formula of the anion found?",
       placeholder:"Enter name or formula",
-      hints:["Try NaOH + Al + heat — does it produce any gas? Then acidify with HNO3 and add Ba(NO₃)₂.","No gas from the NaOH + Al + heat test rules out nitrate. Look for an anion that forms a white ppt with Ba2+ insoluble in acid.","The answer is sulfate — SO42-. Barium sulfate (BaSO4) is a white precipitate insoluble in dilute HNO3."],
+      hints:["Try NaOH + Al + heat — does it produce any gas? Then acidify with HNO3 and add Ba(NO3)2.","No gas from the NaOH + Al + heat test rules out nitrate. Look for an anion that forms a white ppt with Ba2+ insoluble in acid.","The answer is sulfate — SO42-. Barium sulfate (BaSO4) is a white precipitate insoluble in dilute HNO3."],
       solvedMessage:"SO42- confirmed in the wine.",
       evidence:{label:"SO42- in wine",detail:"Sulfate ions at abnormal concentrations in the wine.",icon:"🍷"},
     },
@@ -241,7 +241,7 @@ const CASES = [
       locationDesc:"Sir Reginald's private library. An opened bottle of mineral water on the desk — he reportedly drank from it all morning.",
       policeReport:"LIBRARY — Sample E collected from an opened mineral water bottle on Sir Reginald's desk.\n\nThe bottle cap was loose despite being labelled sealed.\n\nACTION: Test Sample E for anion contamination.",
       objects:[{id:"vial_e",label:"Vial — SAMPLE E",icon:"🧪",pickup:true},{id:"bunsen_burner",label:"Bunsen Burner",icon:"🔥",pickup:false},{id:"litmus_red_lib",label:"Damp Red Litmus Paper",icon:"🔴",pickup:true},{id:"litmus_blue_lib",label:"Damp Blue Litmus Paper",icon:"🔵",pickup:true}],
-      reagents:["NaOH solution","Aluminium foil","Dilute HNO3","AgNO3 solution","Ba(NO₃)₂ solution","Limewater"],
+      reagents:["NaOH solution","Aluminium foil","Dilute HNO3","AgNO3 solution","Ba(NO3)2 solution","Limewater"],
       isAnionStation:true,
       reactions:{
         "NaOH solution":{first:{text:"You add NaOH solution. The solution stays clear.",visual:null}},
@@ -249,7 +249,7 @@ const CASES = [
         "Dilute HNO3":{first:{text:"You add dilute nitric acid. No fizzing.",visual:null}},
         "Limewater":{first:{text:"You add limewater. Nothing happens.",visual:null}},
         "AgNO3 solution":{first_without_acid:{text:"You add AgNO3 without acidifying first. A white precipitate forms — but acidify with HNO3 first for a reliable result.",visual:{type:"ppt",color:"#e5e7eb"},warning:true},first_with_acid:{text:"You add AgNO3 to the acidified sample. A WHITE precipitate forms and does NOT dissolve in acid.",visual:{type:"ppt",color:"#e5e7eb"}}},
-        "Ba(NO₃)₂ solution":{first:{text:"You add Ba(NO₃)₂ solution. No precipitate forms.",visual:null}},
+        "Ba(NO3)2 solution":{first:{text:"You add Ba(NO3)2 solution. No precipitate forms.",visual:null}},
       },
       heating:{requiresReagent:"Aluminium foil",result:{text:"You heat the alkaline mixture with aluminium. No pungent gas is produced.",visual:null}},
       answer:{accepted:["Cl-","Cl-","chloride","chloride ion"]},
@@ -302,7 +302,6 @@ const ION_LABELS = {
 };
 const CASE_IONS = {0:["Cu2+","NO3-","CO2"],1:["Zn2+","SO42-","SO2"],2:["NH4+","Cl-","NH3+HCl"]};
 const CASE_NAMES = ["The Ashworth Affair","The Blackwood Inheritance","The Thornfield Tragedy"];
-const SUSPECT_COLORS = ["#e11d48","#2563eb","#d97706","#16a34a","#9333ea","#0891b2"];
 
 function StyledButton({children,onClick,variant="primary",style:ex,disabled}){
   const v={primary:{background:"linear-gradient(135deg,"+S.accent+",#a07840)",color:"#1a1a2e",boxShadow:"0 3px 16px "+S.accentDim},ghost:{background:"transparent",color:S.accent,border:"1px solid "+S.accent+"55"},danger:{background:"linear-gradient(135deg,#dc2626,#991b1b)",color:"#fff",boxShadow:"0 3px 16px #dc262633"}};
@@ -395,7 +394,7 @@ function LimewaterSetup({active=false}){
     <div style={{display:"flex",gap:4,marginTop:4}}>{[0,1,2].map(p=><div key={p} style={{width:6,height:6,borderRadius:"50%",background:phase===p?"#c8a96e":"#333",transition:"background 0.4s"}}/>)}</div>
   </div>;
 }
-function GasTestVisual({testItem,result,theme="dark"}){
+
   const getTestLabel=(id)=>{
     const labels={
       "litmus_red":"DAMP RED LITMUS","litmus_blue":"DAMP BLUE LITMUS",
@@ -575,44 +574,19 @@ function PhaseRegister({onRegister,onOpenDashboard}){
   const [name,setName]=useState("");const [className,setClassName]=useState("");const [preferredName,setPreferredName]=useState("");const [error,setError]=useState("");const [shake,setShake]=useState(false);const [clickCount,setClickCount]=useState(0);const [showPw,setShowPw]=useState(false);
   const getInitials=n=>n.trim().split(/\s+/).map(w=>w.charAt(0).toUpperCase()).join("");
   const handleSubmit=async()=>{
-  if(!name.trim()||!className.trim()||!preferredName.trim()){
-    setError("All fields are required!");
-    setShake(true);
-    setTimeout(()=>setShake(false),400);
-    return;
-  }
-
-  if(/\d/.test(name)){
-    setError("Full name should not contain numbers!");
-    setShake(true);
-    setTimeout(()=>setShake(false),400);
-    return;
-  }
-
-  const baseId=getInitials(name).toLowerCase()+"_"+className.trim().toLowerCase().replace(/\s+/g,"_");
-  const displayName=preferredName.trim();
-
-  const data={
-    fullName:name.trim(),
-    displayName,
-    class:className.trim(),
-    id:baseId+"_"+Date.now(),
-    timestamp:new Date().toISOString(),
-    casesCompleted:[],
-    ionAttempts:[],
-    caseTimes:[]
+    if(!name.trim()||!className.trim()||!preferredName.trim()){setError("All fields are required!");setShake(true);setTimeout(()=>setShake(false),400);return;}
+    if(/\d/.test(name)){setError("Full name should not contain numbers!");setShake(true);setTimeout(()=>setShake(false),400);return;}
+    const baseId=getInitials(name).toLowerCase()+"_"+className.trim().toLowerCase().replace(/\s+/g,"_");
+    const displayName=preferredName.trim();
+    try{
+      let finalId=baseId;
+      const existing=await getDoc(doc(db,"students",baseId));
+      if(existing.exists()){let suffix=2;while((await getDoc(doc(db,"students",baseId+"_"+suffix))).exists())suffix++;finalId=baseId+"_"+suffix;}
+      const data={fullName:name.trim(),displayName,class:className.trim(),id:finalId,timestamp:new Date().toISOString(),casesCompleted:[],ionAttempts:[],caseTimes:[]};
+      await setDoc(doc(db,"students",finalId),data);
+      onRegister(data);
+    }catch(e){setError("Error: "+e.message);}
   };
-
-  // Proceed immediately
-  onRegister(data);
-
-  // Save to Firebase in the background
-  try{
-    await setDoc(doc(db,"students",data.id),data);
-  }catch(e){
-    console.error("Firebase save failed:",e);
-  }
-};
   return <div style={{animation:shake?"shake 0.4s ease":"none"}}>
     <div onClick={()=>{const n=clickCount+1;setClickCount(n);if(n>=5){setShowPw(true);setClickCount(0);}}} style={{position:"absolute",top:10,right:10,width:20,height:20,opacity:0.15,cursor:"pointer",fontSize:14}} title="Teacher access">🔑</div>
     {showPw&&<PasswordPrompt onSuccess={()=>{setShowPw(false);onOpenDashboard();}} onCancel={()=>setShowPw(false)}/>}
@@ -710,16 +684,16 @@ function PhaseStation({station,onSolved,caseIdx,detectiveId,theme}){
     const isCationReagent=reagent==="NaOH solution"||reagent==="Aqueous NH3";
     if(isCationReagent&&reagentsAdded.length>0&&!reagentsAdded.includes(reagent)){const first=reagentsAdded[0];if(first==="NaOH solution"||first==="Aqueous NH3"){addLog("You cannot mix different cation reagents in the same test tube. Use a fresh test tube.");return;}}
     if(reagentsAdded.includes(reagent)){if(excessAdded===reagent){addLog("Already added excess of this reagent.");return;}setExcessAdded(reagent);const rx=station.reactions[reagent];if(rx&&rx.excess){addLog("Same test tube — "+rx.excess.text);updateVisual(rx.excess.visual);}else addLog("Same test tube — No further change.");return;}
-    if(isAnionStation&&reagent==="Ba(NO₃)₂ solution"&&!reagentsAdded.includes("Dilute HNO₃")){setReagentsAdded(p=>[...p,reagent]);const rx=station.reactions["Ba(NO₃)₂ solution"].first_without_acid;addLog("Fresh test tube — "+rx.text);setVisualState({liquidLevel:60,liquidColor:getInitialSampleColor(),precipitateColor:null,precipitateHeight:0,bubbling:false,animating:null});updateVisual(rx.visual);return;}
-    if(isAgnoFirstStation&&reagent==="AgNO₃ solution"&&!reagentsAdded.includes("Dilute HNO₃")){setReagentsAdded(p=>[...p,reagent]);const rx=station.reactions["AgNO3 solution"].first_without_acid;addLog("Fresh test tube — "+rx.text);setVisualState({liquidLevel:60,liquidColor:getInitialSampleColor(),precipitateColor:null,precipitateHeight:0,bubbling:false,animating:null});updateVisual(rx.visual);return;}
+    if(isAnionStation&&reagent==="Ba(NO3)2 solution"&&!reagentsAdded.includes("Dilute HNO3")){setReagentsAdded(p=>[...p,reagent]);const rx=station.reactions["Ba(NO3)2 solution"].first_without_acid;addLog("Fresh test tube — "+rx.text);setVisualState({liquidLevel:60,liquidColor:getInitialSampleColor(),precipitateColor:null,precipitateHeight:0,bubbling:false,animating:null});updateVisual(rx.visual);return;}
+    if(isAgnoFirstStation&&reagent==="AgNO3 solution"&&!reagentsAdded.includes("Dilute HNO3")){setReagentsAdded(p=>[...p,reagent]);const rx=station.reactions["AgNO3 solution"].first_without_acid;addLog("Fresh test tube — "+rx.text);setVisualState({liquidLevel:60,liquidColor:getInitialSampleColor(),precipitateColor:null,precipitateHeight:0,bubbling:false,animating:null});updateVisual(rx.visual);return;}
     if(reagent==="Aluminium foil"&&station.reactions["Aluminium foil"]&&station.reactions["Aluminium foil"].first_without_naoh&&!reagentsAdded.includes("NaOH solution")){setReagentsAdded(p=>[...p,reagent]);addLog(station.reactions["Aluminium foil"].first_without_naoh.text);return;}
     setReagentsAdded(p=>[...p,reagent]);
     const rx=station.reactions[reagent];
     const isFresh=reagentsAdded.length===0;
     const prefix=isFresh?"Fresh test tube — ":"Same test tube — ";
     if(isFresh)setVisualState({liquidLevel:60,liquidColor:getInitialSampleColor(),precipitateColor:null,precipitateHeight:0,bubbling:false,animating:null});
-    if(isAnionStation&&reagent==="Ba(NO₃)₂ solution"&&reagentsAdded.includes("Dilute HNO₃")){addLog("Fresh test tube with new sample — acidified first with dilute HNO\u2083, then "+rx.first_with_acid.text);updateVisual(rx.first_with_acid.visual);}
-    else if(isAgnoFirstStation&&reagent==="AgNO₃ solution"&&reagentsAdded.includes("Dilute HNO₃")){addLog("Fresh test tube with new sample — acidified first with dilute HNO\u2083, then "+rx.first_with_acid.text);updateVisual(rx.first_with_acid.visual);}
+    if(isAnionStation&&reagent==="Ba(NO3)2 solution"&&reagentsAdded.includes("Dilute HNO3")){addLog("Fresh test tube with new sample — acidified first with dilute HNO\u2083, then "+rx.first_with_acid.text);updateVisual(rx.first_with_acid.visual);}
+    else if(isAgnoFirstStation&&reagent==="AgNO3 solution"&&reagentsAdded.includes("Dilute HNO3")){addLog("Fresh test tube with new sample — acidified first with dilute HNO\u2083, then "+rx.first_with_acid.text);updateVisual(rx.first_with_acid.visual);}
     else if(reagent==="Aluminium foil"&&reagentsAdded.includes("NaOH solution")&&rx&&rx.first_with_naoh){addLog(prefix+rx.first_with_naoh.text);updateVisual(rx.first_with_naoh.visual);}
     else if(rx&&rx.first){addLog(prefix+rx.first.text);updateVisual(rx.first.visual);}
     else if(rx&&!rx.first&&!rx.first_with_naoh){addLog(prefix+"No reaction observed.");}
@@ -798,14 +772,8 @@ function PhaseStation({station,onSolved,caseIdx,detectiveId,theme}){
     if(correctButWrongCase){setAttemptCount(c=>c+1);setShake(true);setAnswerError(CAPS_MSG);setTimeout(()=>setShake(false),500);return;}
     const formulaMatch=formulaAccepted.some(a=>{const an=normalizeSubscripts(a).replace(/[²³⁺⁻]/g,m=>m==="²"?"2":m==="³"?"3":m==="⁺"?"+":"-");return inputNorm===an;});
     const nameMatch=nameAccepted.some(a=>{if(/\([IVX]+\)/.test(a)){const bp=a.match(/\([IVX]+\)/)[0];if(!input.includes(bp))return false;const np=a.replace(/\([IVX]+\)/,"").trim();return inputLower.includes(np.toLowerCase());}return inputLower.includes(a.toLowerCase());});
-
-    if(formulaMatch||nameMatch){
-      await recordAttempt(ionKey,false);
-      await recordCaseTime(caseIdx);
-      setSolved(true);
-      addLog({text:"Correct! The answer is: "+fmt(station.answer.accepted[0]),color:"#15803d"});
-      addLog({text:"🔓 "+station.solvedMessage,color:"#15803d"});
-    }else{   
+    if(formulaMatch||nameMatch){await recordAttempt(ionKey,false);await recordCaseTime(caseIdx);setSolved(true);addLog({text:"Correct! The answer is: "+station.answer.accepted[0],color:"#15803d"});addLog({text:"🔓 "+station.solvedMessage,color:"#15803d"});}
+    else{
       setAttemptCount(c=>c+1);setWrongCount(c=>c+1);
       let msg="Incorrect answer.";
       if(inputLower==="copper"||inputLower==="iron"||inputLower==="manganese")msg="Transition metals need Roman numerals in brackets! e.g. copper(II), iron(II), iron(III)";
@@ -916,12 +884,12 @@ function PhaseAccusation({caseData,onVerdict,onCaseSolved,detectiveId,suspectCol
   };
   return <div>
     <div style={{textAlign:"center",marginBottom:18}}><span style={{fontSize:36}}>⚖️</span><h2 style={{margin:"6px 0 4px",fontFamily:"'Georgia',serif",fontSize:22,color:S.textPrimary}}>The Accusation</h2><p style={{color:S.textSecondary,fontSize:13,margin:0}}>Who murdered {caseData.victim.name}?</p></div>
-    <div style={{background:S.cardAlt,border:"1px solid "+S.border,borderRadius:8,padding:"12px 14px",marginBottom:12}}><div style={{color:S.accent,fontSize:10,fontFamily:"'Courier New',monospace",letterSpacing:1.5,textTransform:"uppercase",marginBottom:6}}>🔍 Cross-Reference</div><p style={{color:S.textSecondary,fontSize:12.5,margin:0,lineHeight:1.65}}>{fmt(caseData.accusationGuide)}</p>
+    <div style={{background:S.cardAlt,border:"1px solid "+S.border,borderRadius:8,padding:"12px 14px",marginBottom:12}}><div style={{color:S.accent,fontSize:10,fontFamily:"'Courier New',monospace",letterSpacing:1.5,textTransform:"uppercase",marginBottom:6}}>🔍 Cross-Reference</div><p style={{color:S.textSecondary,fontSize:12.5,margin:0,lineHeight:1.65}}>{caseData.accusationGuide}</p></div>
     <div style={{marginBottom:14}}><button onClick={()=>setDossierOpen(!dossierOpen)} style={{background:S.accent+"0e",border:"1px solid "+S.accent+"33",borderRadius:6,padding:"7px 12px",cursor:"pointer",color:S.accent,fontSize:11,fontFamily:"'Courier New',monospace",width:"100%",textAlign:"left",display:"flex",justifyContent:"space-between"}}><span>📁 Review Suspect Dossiers</span><span>{dossierOpen?"▲":"▼"}</span></button>{dossierOpen&&<div style={{marginTop:8,display:"grid",gridTemplateColumns:"repeat(2, 1fr)",gap:8}}>{caseData.suspects.map(s=><SuspectCard key={s.id} suspect={s} isFlipped={dossierFlipped===s.id} onFlip={()=>setDossierFlipped(dossierFlipped===s.id?null:s.id)} color={suspectColors[s.id]}/>)}</div>}</div>}
     {!submitted&&<><div style={{display:"grid",gridTemplateColumns:"repeat(2, 1fr)",gap:8,marginBottom:16}}>      {caseData.suspects.map(s=>{const sColor=suspectColors[s.id];return <button key={s.id} onClick={()=>setChosen(s.id)} style={{background:chosen===s.id?sColor+"18":S.card,border:"2px solid "+(chosen===s.id?sColor:S.border),borderRadius:8,padding:"10px 12px",cursor:"pointer",textAlign:"left",transition:"all 0.2s"}} onMouseEnter={e=>e.currentTarget.style.borderColor=sColor} onMouseLeave={e=>e.currentTarget.style.borderColor=chosen===s.id?sColor:S.border}><div style={{display:"flex",alignItems:"center",gap:8}}><span style={{fontSize:22}}>{s.portrait}</span><div><div style={{color:chosen===s.id?sColor:S.textPrimary,fontSize:13,fontWeight:700}}>{s.name}</div><div style={{color:S.textMuted,fontSize:10}}>{s.title}</div></div></div></button>;})  }
     </div><StyledButton onClick={()=>setSubmitted(true)} variant="danger" disabled={!chosen} style={{width:"100%"}}>🚨 I Accuse {chosen?caseData.suspects.find(s=>s.id===chosen).name:"…"}</StyledButton></>}
     {submitted&&<div style={{animation:"pinIn 0.5s ease"}}>
-      {chosen===correct.id?<div style={{background:"#14532d",border:"1px solid #22c55e55",borderRadius:10,padding:"22px 20px",textAlign:"center"}}><div style={{fontSize:44,marginBottom:6}}>🏆</div><h3 style={{color:"#4ade80",fontFamily:"'Georgia',serif",fontSize:22,margin:"0 0 10px"}}>CASE SOLVED</h3><p style={{color:"#86efac",fontSize:13.5,margin:0,lineHeight:1.7}}>{fmt(caseData.guilty)}</div>
+      {chosen===correct.id?<div style={{background:"#14532d",border:"1px solid #22c55e55",borderRadius:10,padding:"22px 20px",textAlign:"center"}}><div style={{fontSize:44,marginBottom:6}}>🏆</div><h3 style={{color:"#4ade80",fontFamily:"'Georgia',serif",fontSize:22,margin:"0 0 10px"}}>CASE SOLVED</h3><p style={{color:"#86efac",fontSize:13.5,margin:0,lineHeight:1.7}}>{caseData.guilty}</p></div>
       :<div style={{background:"#1f2937",border:"1px solid #ef444455",borderRadius:10,padding:"22px 20px",textAlign:"center"}}><div style={{fontSize:44,marginBottom:6}}>❌</div><h3 style={{color:"#f87171",fontFamily:"'Georgia',serif",fontSize:22,margin:"0 0 10px"}}>WRONG SUSPECT</h3><p style={{color:"#fca5a5",fontSize:13,margin:"0 0 10px",lineHeight:1.7}}>{caseData.suspects.find(s=>s.id===chosen).name} is innocent.</p><p style={{color:"#f87171",fontSize:12.5,margin:0}}>The killer was <strong>{correct.name}</strong>.</p></div>}
       <StyledButton onClick={handleVerdict} style={{width:"100%",marginTop:14}}>View Chemistry Debrief →</StyledButton>
     </div>}
@@ -942,9 +910,9 @@ function PhaseDebrief({caseData,onRestart,onBackToSelect,solvedCases}){
   return <div>
     <div style={{textAlign:"center",marginBottom:18}}><span style={{fontSize:36}}>📋</span><h2 style={{margin:"6px 0 4px",fontFamily:"'Georgia',serif",fontSize:22,color:S.textPrimary}}>Chemistry Debrief</h2><p style={{color:S.textSecondary,fontSize:13,margin:0}}>Review the tests and their significance</p></div>
     {caseData.debrief.map((row,i)=><div key={i} style={{background:S.cardAlt,border:"1px solid "+S.border,borderRadius:10,padding:"14px 16px",marginBottom:12}}>
-      <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:8}}><div style={{color:S.accent,fontSize:13,fontWeight:700,fontFamily:"'Georgia',serif"}}>{row.scenario}</div><div style={{background:S.accent+"18",border:"1px solid "+S.accent+"44",borderRadius:4,padding:"2px 8px",color:S.accent,fontSize:11,fontFamily:"'Courier New',monospace",fontWeight:700}}>{fmt(row.ion)}</div></div>
-      <div style={{background:S.blue+"14",border:"1px solid "+S.blue+"44",borderRadius:6,padding:"6px 10px",marginBottom:10}}><span style={{color:S.blue,fontSize:11}}>Real World: {fmt(row.realWorld)}</span></div>
-      <table style={{width:"100%",borderCollapse:"collapse",fontSize:11.5}}><thead><tr style={{borderBottom:"1px solid "+S.border}}><th style={{textAlign:"left",padding:"5px 8px",color:S.textMuted,fontFamily:"'Courier New',monospace",fontSize:9,letterSpacing:1,textTransform:"uppercase",fontWeight:600}}>Reagent / Test</th><th style={{textAlign:"left",padding:"5px 8px",color:S.textMuted,fontFamily:"'Courier New',monospace",fontSize:9,letterSpacing:1,textTransform:"uppercase",fontWeight:600}}>Observation</th></tr></thead><tbody>{row.tests.map((t,j)=><tr key={j} style={{borderBottom:"1px solid "+S.border+"55"}}><td style={{padding:"5px 8px",color:S.accent,fontWeight:600}}>{fmt(t.reagent)}</td><td style={{padding:"5px 8px",color:S.textSecondary}}>{fmt(t.result)}</td></tr>)}</tbody></table>
+      <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:8}}><div style={{color:S.accent,fontSize:13,fontWeight:700,fontFamily:"'Georgia',serif"}}>{row.scenario}</div><div style={{background:S.accent+"18",border:"1px solid "+S.accent+"44",borderRadius:4,padding:"2px 8px",color:S.accent,fontSize:11,fontFamily:"'Courier New',monospace",fontWeight:700}}>{row.ion}</div></div>
+      <div style={{background:S.blue+"14",border:"1px solid "+S.blue+"44",borderRadius:6,padding:"6px 10px",marginBottom:10}}><span style={{color:S.blue,fontSize:11}}>Real World: {row.realWorld}</span></div>
+      <table style={{width:"100%",borderCollapse:"collapse",fontSize:11.5}}><thead><tr style={{borderBottom:"1px solid "+S.border}}><th style={{textAlign:"left",padding:"5px 8px",color:S.textMuted,fontFamily:"'Courier New',monospace",fontSize:9,letterSpacing:1,textTransform:"uppercase",fontWeight:600}}>Reagent / Test</th><th style={{textAlign:"left",padding:"5px 8px",color:S.textMuted,fontFamily:"'Courier New',monospace",fontSize:9,letterSpacing:1,textTransform:"uppercase",fontWeight:600}}>Observation</th></tr></thead><tbody>{row.tests.map((t,j)=><tr key={j} style={{borderBottom:"1px solid "+S.border+"55"}}><td style={{padding:"5px 8px",color:S.accent,fontWeight:600}}>{t.reagent}</td><td style={{padding:"5px 8px",color:S.textSecondary}}>{t.result}</td></tr>)}</tbody></table>
     </div>)}
     {solvedCases.size===3?<div style={{background:S.accent+"0a",border:"1px solid "+S.accent+"33",borderRadius:8,padding:"12px 14px",marginBottom:16}}><div style={{color:S.accent,fontSize:10,fontFamily:"'Courier New',monospace",letterSpacing:1.5,textTransform:"uppercase",marginBottom:7,fontWeight:700}}>🏆 Master Key Points — All Cases Solved</div>{examTips.map((tip,i)=><div key={i} style={{display:"flex",gap:7,marginBottom:i<examTips.length-1?6:0,alignItems:"flex-start"}}><span style={{color:S.accent,fontSize:12}}>✓</span><span style={{color:S.textSecondary,fontSize:12,lineHeight:1.5}}>{tip}</span></div>)}</div>
     :<div style={{background:S.accent+"0a",border:"1px solid "+S.accent+"33",borderRadius:8,padding:"10px 12px",marginBottom:16}}><div style={{color:S.accent,fontSize:10,fontFamily:"'Courier New',monospace",letterSpacing:1.5,textTransform:"uppercase",marginBottom:4,fontWeight:700}}>🔒 Master Key Points Locked</div><p style={{color:S.textSecondary,fontSize:11.5,margin:0,lineHeight:1.6}}>Solve all 3 cases to unlock a comprehensive comparison guide. <strong>Cases solved: {solvedCases.size}/3</strong></p></div>}
@@ -977,30 +945,17 @@ export default function App(){
   const [showDashboard,setShowDashboard]=useState(false);
 
   const caseData=selectedCase!==null?CASES[selectedCase]:null;
-  const go=useCallback(next=>{setFade(false);setTimeout(()=>{setPhase(next);setFade(true);},280);},[]);
 
-  const selectCase = useCallback((idx)=>{
-    console.log("SELECTED CASE:", idx);
-
+  const selectCase=useCallback(idx=>{
     setSelectedCase(idx);
     setCaseBoard([]);
     setNotes("");
-
-    const shuffled = shuffleArray(SUSPECT_COLORS);
-    const colors = {};
-
-    CASES[idx].suspects.forEach((s,i)=>{
-      colors[s.id] = shuffled[i % shuffled.length];
-    });
-
+    const shuffled=shuffleArray(SUSPECT_COLORS);
+    const colors={};
+    CASES[idx].suspects.forEach((s,i)=>{colors[s.id]=shuffled[i%shuffled.length];});
     setSuspectColors(colors);
-
-    setTimeout(()=>{
-      setPhase("intro");
-      setFade(true);
-    },0);
-
-  },[]);
+    go("intro");
+  },[go]);
   const pinEvidence=useCallback(evidence=>{setCaseBoard(prev=>prev.find(e=>e.label===evidence.label)?prev:[...prev,evidence]);const map={station0:"board0",station1:"board1",station2:"board2"};if(map[phase])go(map[phase]);},[phase]);
 
   const stationPhases={station0:0,station1:1,station2:2};
@@ -1012,14 +967,9 @@ export default function App(){
 
   let content;
   if(showDashboard)content=<TeacherDashboard onBack={()=>setShowDashboard(false)}/>;
-  else if(phase==="register")content=<PhaseRegister onRegister={d=>{
-  console.log("REGISTERED:",d);
-  setDetective(d);
-  setPhase("select");
-  setFade(true);
-}} onOpenDashboard={()=>setShowDashboard(true)}/>;
+  else if(phase==="register")content=<PhaseRegister onRegister={d=>{setDetective(d);go("select");}} onOpenDashboard={()=>setShowDashboard(true)}/>;
   else if(phase==="select")content=<PhaseCaseSelect onSelect={selectCase} detectiveName={detective&&detective.displayName||"Detective"} theme={theme}/>;
-  else if(phase==="intro")content=<PhaseIntro caseData={caseData || CASES[selectedCase]} onStart={()=>go("station0")} onBack={()=>go("select")} suspectColors={suspectColors}/>;
+  else if(phase==="intro"&&caseData)content=<PhaseIntro caseData={caseData} onStart={()=>go("station0")} onBack={()=>go("select")} suspectColors={suspectColors}/>;
   else if(phase in stationPhases&&caseData)content=<PhaseStation key={phase} station={caseData.stations[stationPhases[phase]]} onSolved={pinEvidence} caseIdx={selectedCase} detectiveId={detective&&detective.id} theme={theme}/>;
   else if(phase in boardPhases&&caseData)content=<PhaseCaseBoard caseData={caseData} caseBoard={caseBoard} onContinue={()=>go(boardNext[phase])} isFinal={boardPhases[phase]===2}/>;
   else if(phase==="accusation"&&caseData)content=<PhaseAccusation caseData={caseData} onVerdict={()=>go("debrief")} onCaseSolved={()=>setSolvedCases(prev=>new Set([...prev,selectedCase]))} detectiveId={detective&&detective.id} suspectColors={suspectColors}/>;
