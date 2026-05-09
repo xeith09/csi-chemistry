@@ -15,6 +15,15 @@ const LIGHT = {
 };
 let S = {...DARK};
 
+const SUSPECT_COLORS = [
+  "#c0392b",
+  "#2980b9",
+  "#27ae60",
+  "#8e44ad",
+  "#d35400",
+  "#16a085"
+];
+
 // Chemical formula formatter
 const fmt = s => s
   .replace(/Cu2\+/g,"Cu²⁺").replace(/Zn2\+/g,"Zn²⁺").replace(/Fe2\+/g,"Fe²⁺").replace(/Fe3\+/g,"Fe³⁺")
