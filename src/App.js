@@ -956,8 +956,21 @@ export default function App(){
     setSuspectColors(colors);
     go("intro");
   },[go]);
-  const pinEvidence=useCallback(evidence=>{setCaseBoard(prev=>prev.find(e=>e.label===evidence.label)?prev:[...prev,evidence]);const map={station0:"board0",station1:"board1",station2:"board2"};if(map[phase])go(map[phase]);},[phase]);
+const pinEvidence = useCallback((evidence) => {
+  setCaseBoard(prev =>
+    prev.find(e => e.label === evidence.label)
+      ? prev
+      : [...prev, evidence]
+  );
 
+  const map = {
+    station0: "board0",
+    station1: "board1",
+    station2: "board2"
+  };
+
+  if (map[phase]) go(map[phase]);
+}, [phase, go]);
   const stationPhases={station0:0,station1:1,station2:2};
   const boardPhases={board0:0,board1:1,board2:2};
   const boardNext={board0:"station1",board1:"station2",board2:"accusation"};
