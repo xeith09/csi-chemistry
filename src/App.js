@@ -394,7 +394,7 @@ function LimewaterSetup({active=false}){
     <div style={{display:"flex",gap:4,marginTop:4}}>{[0,1,2].map(p=><div key={p} style={{width:6,height:6,borderRadius:"50%",background:phase===p?"#c8a96e":"#333",transition:"background 0.4s"}}/>)}</div>
   </div>;
 }
-
+function GasTestVisual({testItem,result,theme="dark"}){
   const getTestLabel=(id)=>{
     const labels={
       "litmus_red":"DAMP RED LITMUS","litmus_blue":"DAMP BLUE LITMUS",
